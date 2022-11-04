@@ -19,7 +19,7 @@ const Layout = ({ isLoginPage = false, children = null }: LayoutProps) => {
 
       <div className="min-h-screen flex flex-col">
         {isLoginPage ? <LoginPageHeader /> : <Header />}
-        <main className="flex-1 lg:mt-40">{children}</main>
+        <main className="flex-1 lg:mt-16">{children}</main>
       </div>
     </>
   );
