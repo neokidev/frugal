@@ -6,10 +6,52 @@ import { useForm } from '@mantine/form';
 import { ImSpoonKnife } from 'react-icons/im';
 import { IoIosHome, IoLogoGameControllerB } from 'react-icons/io';
 import { RiShoppingCart2Fill } from 'react-icons/ri';
+import { faker } from '@faker-js/faker';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+const categories = ['food', 'rent', 'entertainment', 'dailyNecessities'];
+
+const createExpensesMock = () => {
+  const now = dayjs();
+
+  return [
+    {
+      id: 1,
+      description: faker.lorem.sentence(),
+      date: faker.date
+        .between(now.startOf('month').toDate(), now.endOf('month').toDate())
+        .toString(),
+      amount: faker.datatype.number({ min: 5, max: 200 }),
+      category: faker.helpers.arrayElement(categories),
+    },
+    {
+      id: 2,
+      description: faker.lorem.sentence(),
+      date: faker.date
+        .between(now.startOf('month').toDate(), now.endOf('month').toDate())
+        .toString(),
+      amount: faker.datatype.number({ min: 5, max: 200 }),
+      category: faker.helpers.arrayElement(categories),
+    },
+    {
+      id: 3,
+      description: faker.lorem.sentence(),
+      date: faker.date
+        .between(now.startOf('month').toDate(), now.endOf('month').toDate())
+        .toString(),
+      amount: faker.datatype.number({ min: 5, max: 200 }),
+      category: faker.helpers.arrayElement(categories),
+    },
+    {
+      id: 4,
+      description: faker.lorem.sentence(),
+      date: faker.date
+        .between(now.startOf('month').toDate(), now.endOf('month').toDate())
+        .toString(),
+      amount: faker.datatype.number({ min: 5, max: 200 }),
+      category: faker.helpers.arrayElement(categories),
+    },
+  ];
+};
 
 export async function getServerSideProps(context: any) {
   // Check if user is authenticated
@@ -25,25 +67,31 @@ export async function getServerSideProps(context: any) {
     };
   }
 
+  const expenses = createExpensesMock();
+
+  console.log('expenses:', expenses);
+
   return {
-    props: {},
+    props: {
+      expenses,
+    },
   };
 }
 
-export default function Home() {
-  let [categories] = useState(['支出', '収入']);
+export default function Home({ expenses = [] }) {
+  // let [categories] = useState(['支出', '収入']);
 
-  const form = useForm({
-    initialValues: {
-      date: new Date(),
-      amount: 0,
-      description: '',
-    },
+  // const form = useForm({
+  //   initialValues: {
+  //     date: new Date(),
+  //     amount: 0,
+  //     description: '',
+  //   },
 
-    transformValues: (values) => ({
-      amount: Number(values.amount) || 0,
-    }),
-  });
+  //   transformValues: (values) => ({
+  //     amount: Number(values.amount) || 0,
+  //   }),
+  // });
 
   const now = useMemo(() => dayjs(), []);
 
@@ -161,158 +209,66 @@ export default function Home() {
                     <div className="overflow-x-auto">
                       <table className="items-center w-full mb-4 align-top border-gray-200">
                         <tbody>
-                          <tr>
-                            <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
-                              <div className="flex items-center px-2 py-1">
-                                <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-purple-700 to-pink-500 text-neutral-900">
-                                  <IoLogoGameControllerB color="white" />
-                                </div>
-                                <div className="ml-6">
-                                  <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Description:
-                                  </p>
-                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    Seven Eleven
-                                  </h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Date:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  13 Oct 2022
-                                </h6>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Amount:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  $230,900
-                                </h6>
-                              </div>
-                            </td>
-                          </tr>
+                          {expenses.map((expense: any) => (
+                            <tr key={expense.id}>
+                              <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
+                                <div className="flex items-center px-2 py-1">
+                                  {expense.category === 'food' && (
+                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-blue-600 to-cyan-400 text-neutral-900">
+                                      <ImSpoonKnife color="white" />
+                                    </div>
+                                  )}
 
-                          <tr>
-                            <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
-                              <div className="flex items-center px-2 py-1">
-                                <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-blue-600 to-cyan-400 text-neutral-900">
-                                  <ImSpoonKnife color="white" />
-                                </div>
-                                <div className="ml-6">
-                                  <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Description:
-                                  </p>
-                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    Seven Eleven
-                                  </h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Date:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  13 Oct 2022
-                                </h6>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Amount:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  $230,900
-                                </h6>
-                              </div>
-                            </td>
-                          </tr>
+                                  {expense.category === 'rent' && (
+                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-600 to-rose-400 text-neutral-900">
+                                      <IoIosHome color="white" />
+                                    </div>
+                                  )}
 
-                          <tr>
-                            <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
-                              <div className="flex items-center px-2 py-1">
-                                <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-500 to-yellow-400 text-neutral-900">
-                                  {/* <IoMdCart color="white" /> */}
-                                  <RiShoppingCart2Fill color="white" />
-                                </div>
-                                <div className="ml-6">
-                                  <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Description:
-                                  </p>
-                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    Seven Eleven
-                                  </h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Date:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  13 Oct 2022
-                                </h6>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Amount:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  $230,900
-                                </h6>
-                              </div>
-                            </td>
-                          </tr>
+                                  {expense.category === 'entertainment' && (
+                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-purple-700 to-pink-500 text-neutral-900">
+                                      <IoLogoGameControllerB color="white" />
+                                    </div>
+                                  )}
 
-                          <tr>
-                            <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
-                              <div className="flex items-center px-2 py-1">
-                                <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-600 to-rose-400 text-neutral-900">
-                                  <IoIosHome color="white" />
+                                  {expense.category === 'dailyNecessities' && (
+                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-500 to-yellow-400 text-neutral-900">
+                                      <RiShoppingCart2Fill color="white" />
+                                    </div>
+                                  )}
+
+                                  <div className="ml-6">
+                                    <p className="mb-0 font-semibold leading-tight text-xs">
+                                      Description:
+                                    </p>
+                                    <h6 className="mb-0 leading-normal text-sm text-gray-700">
+                                      {expense.description}
+                                    </h6>
+                                  </div>
                                 </div>
-                                <div className="ml-6">
+                              </td>
+                              <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
+                                <div className="text-center">
                                   <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Description:
+                                    Date:
                                   </p>
                                   <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    Seven Eleven
+                                    {dayjs(expense.date).format('D MMM')}
                                   </h6>
                                 </div>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Date:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  13 Oct 2022
-                                </h6>
-                              </div>
-                            </td>
-                            <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                              <div className="text-center">
-                                <p className="mb-0 font-semibold leading-tight text-xs">
-                                  Amount:
-                                </p>
-                                <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                  $230,900
-                                </h6>
-                              </div>
-                            </td>
-                          </tr>
+                              </td>
+                              <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
+                                <div className="text-center">
+                                  <p className="mb-0 font-semibold leading-tight text-xs">
+                                    Amount:
+                                  </p>
+                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
+                                    {`\$${expense.amount}`}
+                                  </h6>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
