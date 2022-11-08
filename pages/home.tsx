@@ -7,6 +7,11 @@ import { ImSpoonKnife } from 'react-icons/im';
 import { IoIosHome, IoLogoGameControllerB } from 'react-icons/io';
 import { RiShoppingCart2Fill } from 'react-icons/ri';
 import { faker } from '@faker-js/faker';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import colors from 'tailwindcss/colors';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const categories = ['food', 'rent', 'entertainment', 'dailyNecessities'];
 
@@ -69,16 +74,48 @@ export async function getServerSideProps(context: any) {
 
   const expenses = createExpensesMock();
 
-  console.log('expenses:', expenses);
+  const chartData = {
+    labels: ['food', 'rent', 'entertainment', 'dailyNecessities'],
+    datasets: [
+      {
+        data: [
+          expenses
+            .filter((expense) => expense.category === 'food')
+            .reduce((total, expense) => total + expense.amount, 0),
+          expenses
+            .filter((expense) => expense.category === 'rent')
+            .reduce((total, expense) => total + expense.amount, 0),
+          expenses
+            .filter((expense) => expense.category === 'entertainment')
+            .reduce((total, expense) => total + expense.amount, 0),
+          expenses
+            .filter((expense) => expense.category === 'dailyNecessities')
+            .reduce((total, expense) => total + expense.amount, 0),
+        ],
+        backgroundColor: [
+          colors.blue[500],
+          colors.red[500],
+          colors.purple[500],
+          colors.yellow[500],
+        ],
+      },
+    ],
+  };
 
   return {
     props: {
       expenses,
+      chartData,
+      totalExpenseAmounts: {
+        monthly: 0,
+        weekly: 0,
+        daily: 0,
+      },
     },
   };
 }
 
-export default function Home({ expenses = [] }) {
+export default function Home({ expenses = [], chartData = { datasets: [] } }) {
   // let [categories] = useState(['支出', '収入']);
 
   // const form = useForm({
@@ -110,7 +147,7 @@ export default function Home({ expenses = [] }) {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-wrap -mx-3">
+              <div className="flex justify-center items-center">
                 <div className="w-full max-w-full px-3 sm:flex-0 shrink-0 md:w-1/2">
                   <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
                     <div className="flex-auto p-4">
@@ -195,6 +232,9 @@ export default function Home({ expenses = [] }) {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="w-full pl-16 pr-4">
+                  <Doughnut data={chartData} />;
                 </div>
               </div>
 
