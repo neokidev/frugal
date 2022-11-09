@@ -135,7 +135,7 @@ const Header = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 w-96 overflow-hidden mt-1 divide-y divide-gray-100 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 w-96 mt-1 divide-y divide-gray-100 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="m-4">
                     <Tab.Group>
                       <Tab.List className="flex space-x-1 rounded-xl bg-gray-600/20 p-1">
