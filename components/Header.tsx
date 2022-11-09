@@ -16,11 +16,11 @@ import classNames from 'classnames';
 
 const menuItems = [
   {
-    label: 'ホーム',
+    label: 'home',
     href: '/home',
   },
   {
-    label: '分析',
+    label: 'summary',
     href: '/summary',
   },
   {
@@ -44,7 +44,7 @@ const Header = () => {
   const user = session?.user;
   const isLoadingUser = status === 'loading';
 
-  let [categories] = useState(['支出', '収入']);
+  let [categories] = useState(['expense', 'income']);
 
   const form = useForm({
     initialValues: {
@@ -166,23 +166,19 @@ const Header = () => {
                           >
                             <form>
                               <DatePicker
-                                label="日付"
-                                minDate={dayjs(new Date())
-                                  .startOf('month')
-                                  .toDate()}
-                                maxDate={dayjs(new Date())
-                                  .endOf('month')
-                                  .toDate()}
+                                label="date"
+                                minDate={dayjs().startOf('month').toDate()}
+                                maxDate={dayjs().endOf('month').toDate()}
                                 {...form.getInputProps('date')}
                               />
                               <TextInput
                                 type="number"
-                                label="金額"
+                                label="amount"
                                 mt="md"
                                 {...form.getInputProps('amount')}
                               />
                               <TextInput
-                                label="内容"
+                                label="description"
                                 mt="md"
                                 {...form.getInputProps('description')}
                               />
@@ -277,7 +273,7 @@ const Header = () => {
                 href="/login"
                 className="flex items-center justify-center h-12 px-4 mt-2 text-sm text-center text-gray-600 transition-colors duration-300 transform border rounded-lg lg:h-10 hover:bg-gray-100 focus:outline-none"
               >
-                ログイン
+                Login
               </Link>
             )}
           </div>
