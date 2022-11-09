@@ -10,6 +10,13 @@ import { faker } from '@faker-js/faker';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import colors from 'tailwindcss/colors';
+import minMax from 'dayjs/plugin/minMax';
+import isBetween from 'dayjs/plugin/isBetween';
+import isToday from 'dayjs/plugin/isToday';
+
+dayjs.extend(minMax);
+dayjs.extend(isBetween);
+dayjs.extend(isToday);
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -58,6 +65,49 @@ const createExpensesMock = () => {
   ];
 };
 
+const calcTotalExpenses = (expenses: any) => {
+  return expenses.reduce((total: number, expense: any) => {
+    return total + expense.amount;
+  }, 0);
+};
+
+const calcTotalExpensesOfThisMonth = (expenses: any) => {
+  const startOfThisMonth = dayjs().startOf('month');
+  const endOfThisMonth = dayjs().endOf('month');
+
+  const expensesInThisMonth = expenses.filter((expense: any) =>
+    dayjs(expense.date).isBetween(startOfThisMonth, endOfThisMonth)
+  );
+
+  return calcTotalExpenses(expensesInThisMonth);
+};
+
+const calcTotalExpensesOfThisWeek = (expenses: any) => {
+  const startOfThisWeek = dayjs.max(
+    dayjs().startOf('month'),
+    dayjs().startOf('week')
+  );
+
+  const endOfThisWeek = dayjs.min(
+    dayjs().endOf('month'),
+    dayjs().endOf('week')
+  );
+
+  const expensesInThisWeek = expenses.filter((expense: any) =>
+    dayjs(expense.date).isBetween(startOfThisWeek, endOfThisWeek)
+  );
+
+  return calcTotalExpenses(expensesInThisWeek);
+};
+
+const calcTotalExpensesOfToday = (expenses: any) => {
+  const expensesInToday = expenses.filter((expense: any) =>
+    dayjs(expense.date).isToday()
+  );
+
+  return calcTotalExpenses(expensesInToday);
+};
+
 export async function getServerSideProps(context: any) {
   // Check if user is authenticated
   const session = await getSession(context);
@@ -102,20 +152,33 @@ export async function getServerSideProps(context: any) {
     ],
   };
 
+  console.log(
+    'this week:',
+    dayjs(),
+    dayjs().startOf('week').add(9, 'hour'),
+    dayjs().endOf('week').add(9, 'hour'),
+    dayjs.max(dayjs().startOf('month'), dayjs().startOf('week')),
+    dayjs.min(dayjs().endOf('month'), dayjs().endOf('week'))
+  );
+
   return {
     props: {
       expenses,
       chartData,
-      totalExpenseAmounts: {
-        monthly: 0,
-        weekly: 0,
-        daily: 0,
+      totalExpenses: {
+        thisMonth: calcTotalExpensesOfThisMonth(expenses),
+        thisWeek: calcTotalExpensesOfThisWeek(expenses),
+        today: calcTotalExpensesOfToday(expenses),
       },
     },
   };
 }
 
-export default function Home({ expenses = [], chartData = { datasets: [] } }) {
+export default function Home({
+  expenses = [],
+  chartData = { datasets: [] },
+  totalExpenses = { thisMonth: 0, thisWeek: 0, today: 0 },
+}) {
   // let [categories] = useState(['支出', '収入']);
 
   // const form = useForm({
@@ -158,7 +221,7 @@ export default function Home({ expenses = [], chartData = { datasets: [] } }) {
                               This Month's Expenses
                             </p>
                             <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              $1,300
+                              {`$${totalExpenses.thisMonth}`}
                               <span className="leading-normal text-sm font-weight-bolder text-lime-500 ml-1">
                                 +55%
                               </span>
@@ -186,7 +249,7 @@ export default function Home({ expenses = [], chartData = { datasets: [] } }) {
                               This Week's Expenses
                             </p>
                             <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              $300
+                              {`$${totalExpenses.thisWeek}`}
                               <span className="leading-normal text-sm font-weight-bolder text-red-600 ml-1">
                                 -20%
                               </span>
@@ -214,7 +277,7 @@ export default function Home({ expenses = [], chartData = { datasets: [] } }) {
                               Today's Expenses
                             </p>
                             <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              $20
+                              {`$${totalExpenses.today}`}
                               <span className="leading-normal text-sm font-weight-bolder text-lime-500 ml-1">
                                 +15%
                               </span>
