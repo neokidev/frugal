@@ -1,11 +1,18 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { HiOutlineLogout } from 'react-icons/hi';
-import { HiOutlineUser, HiOutlineChevronDown } from 'react-icons/hi2';
+import { HiOutlineUser, HiOutlineChevronDown, HiPlus } from 'react-icons/hi2';
 import { HiChartBar } from 'react-icons/hi2';
 import Image from 'next/image';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Transition, Tab } from '@headlessui/react';
+import { DatePicker } from '@mantine/dates';
+import dayjs from 'dayjs';
+import { useForm } from '@mantine/form';
+import { TextInput } from '@mantine/core';
+import classNames from 'classnames';
+
+// const categories = ['food', 'rent', 'entertainment', 'dailyNecessities'];
 
 const menuItems = [
   {
@@ -15,6 +22,12 @@ const menuItems = [
   {
     label: '分析',
     href: '/summary',
+  },
+  {
+    label: '',
+    icon: HiPlus,
+    onClick: () => null,
+    href: '',
   },
 ];
 
@@ -30,6 +43,20 @@ const Header = () => {
   const { data: session, status } = useSession();
   const user = session?.user;
   const isLoadingUser = status === 'loading';
+
+  let [categories] = useState(['支出', '収入']);
+
+  const form = useForm({
+    initialValues: {
+      date: new Date(),
+      amount: 0,
+      description: '',
+    },
+
+    transformValues: (values) => ({
+      amount: Number(values.amount) || 0,
+    }),
+  });
 
   return (
     <header className="bg-white border-b lg:fixed lg:w-full lg:top-0 lg:left-0 lg:z-30">
@@ -91,6 +118,90 @@ const Header = () => {
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
             </button>
+
+            <Menu as="div" className="relative z-50">
+              <Menu.Button className="flex items-center space-x-px group">
+                <div className="shrink-0 flex items-center justify-center rounded-full overflow-hidden relative w-9 h-9">
+                  <HiPlus className="text-gray-500 w-6 h-6" />
+                </div>
+                <HiOutlineChevronDown className="w-5 h-5 shrink-0 text-gray-500 group-hover:text-current" />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 w-96 overflow-hidden mt-1 divide-y divide-gray-100 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="m-4">
+                    <Tab.Group>
+                      <Tab.List className="flex space-x-1 rounded-xl bg-gray-600/20 p-1">
+                        {categories.map((category) => (
+                          <Tab
+                            key={category}
+                            className={({ selected }) =>
+                              classNames(
+                                'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-gray-500',
+                                'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none focus:ring-2',
+                                selected
+                                  ? 'bg-white shadow'
+                                  : 'text-gray-100 hover:bg-white/[0.12] hover:text-white'
+                              )
+                            }
+                          >
+                            {category}
+                          </Tab>
+                        ))}
+                      </Tab.List>
+                      <Tab.Panels className="mt-2">
+                        {categories.map((_, idx) => (
+                          <Tab.Panel
+                            key={idx}
+                            className={
+                              'rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none focus:ring-2'
+                            }
+                          >
+                            <form>
+                              <DatePicker
+                                label="日付"
+                                minDate={dayjs(new Date())
+                                  .startOf('month')
+                                  .toDate()}
+                                maxDate={dayjs(new Date())
+                                  .endOf('month')
+                                  .toDate()}
+                                {...form.getInputProps('date')}
+                              />
+                              <TextInput
+                                type="number"
+                                label="金額"
+                                mt="md"
+                                {...form.getInputProps('amount')}
+                              />
+                              <TextInput
+                                label="内容"
+                                mt="md"
+                                {...form.getInputProps('description')}
+                              />
+                              <button
+                                type="submit"
+                                className="w-full bg-sky-400 hover:bg-sky-300 py-1 mt-4 rounded-lg text-white"
+                                onClick={() => null}
+                              >
+                                入力
+                              </button>
+                            </form>
+                          </Tab.Panel>
+                        ))}
+                      </Tab.Panels>
+                    </Tab.Group>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
 
             {isLoadingUser ? (
               <div className="h-8 w-[75px] bg-gray-200 animate-pulse rounded-md" />
