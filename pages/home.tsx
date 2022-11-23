@@ -13,6 +13,13 @@ import colors from 'tailwindcss/colors';
 import minMax from 'dayjs/plugin/minMax';
 import isBetween from 'dayjs/plugin/isBetween';
 import isToday from 'dayjs/plugin/isToday';
+import { Transaction } from '@/components/Transaction';
+import {
+  HiAdjustmentsVertical,
+  HiMagnifyingGlass,
+  HiOutlineMagnifyingGlass,
+} from 'react-icons/hi2';
+import { HiSearch } from 'react-icons/hi';
 
 dayjs.extend(minMax);
 dayjs.extend(isBetween);
@@ -183,184 +190,75 @@ export default function Home({
 
   return (
     <Layout>
-      <div className="m-0 font-open-sans antialiased font-normal text-left leading-default text-base bg-gray-50 text-slate-500 relative h-full max-h-screen transition-all duration-200 ease-soft-in-out xl:ml-68 rounded-xl max-w-[60rem] mx-auto">
-        <div className="w-full p-6 mx-auto bg-sky-100">
+      <div className="m-0 antialiased font-normal text-left leading-default relative h-full max-h-screen transition-all duration-200 ease-soft-in-out xl:ml-68 rounded-xl max-w-[60rem] mx-auto">
+        <div className="w-full p-6 mx-auto">
           <div className="flex flex-wrap -mx-3">
             <div className="relative z-20 w-full max-w-full px-3 lg:flex-0 shrink-0">
-              <div className="relative flex flex-col min-w-0 mb-6 break-words bg-transparent border-0 border-solid shadow-none border-black-125 rounded-2xl bg-clip-border">
+              <div className="relative flex flex-col min-w-0 break-words bg-transparent border-0 border-solid shadow-none border-black-125 rounded-2xl bg-clip-border">
                 <div className="flex-auto p-4">
                   <div className="flex justify-center">
-                    <h2 className="mb-0 font-bold text-4xl text-gray-700">
+                    <h2 className="inline-block mb-2 text-3xl font-extrabold tracking-tight text-black">
                       {now.format('MMMM YYYY')}
                     </h2>
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center">
-                <div className="w-full max-w-full px-3 sm:flex-0 shrink-0 md:w-1/2">
-                  <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div className="flex-auto p-4">
-                      <div className="flex flex-wrap -mx-3">
-                        <div className="flex-none w-2/3 max-w-full px-3">
-                          <div>
-                            <p className="mb-0 font-open-sans font-semibold leading-normal text-sm">
-                              This Month's Expenses
-                            </p>
-                            <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              {`$${totalExpenses.thisMonth}`}
-                              <span className="leading-normal text-sm font-weight-bolder text-lime-500 ml-1">
-                                +55%
-                              </span>
-                            </h5>
-                          </div>
-                        </div>
-                        <div className="w-4/12 max-w-full px-3 text-right flex-0">
-                          <div className="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl">
-                            <i
-                              className="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"
-                              aria-hidden="true"
-                            ></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div className="flex-auto p-4">
-                      <div className="flex flex-wrap -mx-3">
-                        <div className="flex-none w-2/3 max-w-full px-3">
-                          <div>
-                            <p className="mb-0 font-open-sans font-semibold leading-normal text-sm">
-                              This Week's Expenses
-                            </p>
-                            <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              {`$${totalExpenses.thisWeek}`}
-                              <span className="leading-normal text-sm font-weight-bolder text-red-600 ml-1">
-                                -20%
-                              </span>
-                            </h5>
-                          </div>
-                        </div>
-                        <div className="w-4/12 max-w-full px-3 text-right flex-0">
-                          <div className="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl">
-                            <i
-                              className="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"
-                              aria-hidden="true"
-                            ></i>
-                          </div>
-                        </div>
-                      </div>
+              <div className="py-8 rounded-3xl">
+                <div className="flex justify-center my-2">
+                  <div className="text-center">
+                    <div className="text-lg font-semibold text-gray-500">
+                      Balance
                     </div>
-                  </div>
-
-                  <div className="relative flex flex-col min-w-0 mb-6 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div className="flex-auto p-4">
-                      <div className="flex flex-wrap -mx-3">
-                        <div className="flex-none w-2/3 max-w-full px-3">
-                          <div>
-                            <p className="mb-0 font-open-sans font-semibold leading-normal text-sm">
-                              Today's Expenses
-                            </p>
-                            <h5 className="mb-0 font-bold text-lg text-gray-700">
-                              {`$${totalExpenses.today}`}
-                              <span className="leading-normal text-sm font-weight-bolder text-lime-500 ml-1">
-                                +15%
-                              </span>
-                            </h5>
-                          </div>
-                        </div>
-                        <div className="w-4/12 max-w-full px-3 text-right flex-0">
-                          <div className="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl">
-                            <i
-                              className="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"
-                              aria-hidden="true"
-                            ></i>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="text-4xl font-bold text-black">
+                      <span className="mr-0.5">$</span>
+                      400.00
                     </div>
                   </div>
                 </div>
-                <div className="w-full pl-16 pr-4">
-                  <Doughnut data={chartData} />;
+
+                <div className="grid sm:grid-cols-2">
+                  <div className="text-center my-2 w-full rounded-2xl">
+                    <div className="font-semibold text-gray-500">Income</div>
+                    <div className="text-2xl font-bold text-[#00a86b]">
+                      <span className="mr-0.5">$</span>
+                      5,000.00
+                    </div>
+                  </div>
+                  <div className="text-center my-2 w-full rounded-2xl">
+                    <div className="font-semibold text-gray-500">Expenses</div>
+                    <div className="text-2xl font-bold text-[#fd3c4a]">
+                      <span className="mr-0.5">$</span>
+                      1,200.00
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap mt-6 -mx-3">
-                <div className="w-full max-w-full px-3 flex-0">
-                  <div className="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-black-125 shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div className="p-4 pb-0 mb-0 rounded-t-4">
-                      <div className="flex justify-between">
-                        <h6 className="mb-2 text-gray-700">Expenses</h6>
+              <div className="[&>*:not(:last-child)]:mb-4">
+                <div>
+                  <div className="flex">
+                    <div className="text-black font-bold text-2xl my-2">
+                      Transactions
+                    </div>
+
+                    <div className="flex justify-center items-center">
+                      <div className="m-1 p-1 hover:bg-gray-200 rounded-lg">
+                        <HiAdjustmentsVertical className="h-5 w-5 text-gray-500 " />
                       </div>
                     </div>
-                    <div className="overflow-x-auto">
-                      <table className="items-center w-full mb-4 align-top border-gray-200">
-                        <tbody>
-                          {expenses.map((expense: any) => (
-                            <tr key={expense.id}>
-                              <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap">
-                                <div className="flex items-center px-2 py-1">
-                                  {expense.category === 'food' && (
-                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-blue-600 to-cyan-400 text-neutral-900">
-                                      <ImSpoonKnife color="white" />
-                                    </div>
-                                  )}
+                  </div>
 
-                                  {expense.category === 'rent' && (
-                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-600 to-rose-400 text-neutral-900">
-                                      <IoIosHome color="white" />
-                                    </div>
-                                  )}
-
-                                  {expense.category === 'entertainment' && (
-                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-purple-700 to-pink-500 text-neutral-900">
-                                      <IoLogoGameControllerB color="white" />
-                                    </div>
-                                  )}
-
-                                  {expense.category === 'dailyNecessities' && (
-                                    <div className="flex items-center justify-center w-6 h-6 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-500 to-yellow-400 text-neutral-900">
-                                      <RiShoppingCart2Fill color="white" />
-                                    </div>
-                                  )}
-
-                                  <div className="ml-6">
-                                    <p className="mb-0 font-semibold leading-tight text-xs">
-                                      Description:
-                                    </p>
-                                    <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                      {expense.description}
-                                    </h6>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                                <div className="text-center">
-                                  <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Date:
-                                  </p>
-                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    {dayjs(expense.date).format('D MMM')}
-                                  </h6>
-                                </div>
-                              </td>
-                              <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap">
-                                <div className="text-center">
-                                  <p className="mb-0 font-semibold leading-tight text-xs">
-                                    Amount:
-                                  </p>
-                                  <h6 className="mb-0 leading-normal text-sm text-gray-700">
-                                    {`\$${expense.amount}`}
-                                  </h6>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                  <div className="[&>*]:shadow-md [&>*]:m-1 grid md:grid-cols-2">
+                    {[0, 0, 0, 0, 0, 0, 0, 0, 0].map((_, index) => (
+                      <Transaction
+                        key={index}
+                        type={index % 3 <= 1 ? 'income' : 'expense'}
+                        name="Spotify"
+                        description="description"
+                        amount={1000}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
