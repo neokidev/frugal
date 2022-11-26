@@ -3,15 +3,12 @@ import { getSession } from 'next-auth/react';
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import { faker } from '@faker-js/faker';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import colors from 'tailwindcss/colors';
 import minMax from 'dayjs/plugin/minMax';
 import isBetween from 'dayjs/plugin/isBetween';
 import isToday from 'dayjs/plugin/isToday';
-import { Transaction } from '@/components/Transaction';
-import {
-  HiAdjustmentsVertical, HiArrowDownLeft, HiArrowUpRight
-} from 'react-icons/hi2';
+import { Divider, Paper, Progress, Title } from '@mantine/core';
 
 dayjs.extend(minMax);
 dayjs.extend(isBetween);
@@ -32,7 +29,7 @@ const createExpensesMock = () => {
         .between(now.startOf('month').toDate(), now.endOf('month').toDate())
         .toString(),
       amount: faker.datatype.number({ min: 5, max: 200 }),
-      category: faker.helpers.arrayElement(categories)
+      category: faker.helpers.arrayElement(categories),
     },
     {
       id: 2,
@@ -41,7 +38,7 @@ const createExpensesMock = () => {
         .between(now.startOf('month').toDate(), now.endOf('month').toDate())
         .toString(),
       amount: faker.datatype.number({ min: 5, max: 200 }),
-      category: faker.helpers.arrayElement(categories)
+      category: faker.helpers.arrayElement(categories),
     },
     {
       id: 3,
@@ -50,7 +47,7 @@ const createExpensesMock = () => {
         .between(now.startOf('month').toDate(), now.endOf('month').toDate())
         .toString(),
       amount: faker.datatype.number({ min: 5, max: 200 }),
-      category: faker.helpers.arrayElement(categories)
+      category: faker.helpers.arrayElement(categories),
     },
     {
       id: 4,
@@ -59,8 +56,8 @@ const createExpensesMock = () => {
         .between(now.startOf('month').toDate(), now.endOf('month').toDate())
         .toString(),
       amount: faker.datatype.number({ min: 5, max: 200 }),
-      category: faker.helpers.arrayElement(categories)
-    }
+      category: faker.helpers.arrayElement(categories),
+    },
   ];
 };
 
@@ -116,8 +113,8 @@ export async function getServerSideProps(context: any) {
     return {
       redirect: {
         destination: '/',
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 
@@ -139,16 +136,16 @@ export async function getServerSideProps(context: any) {
             .reduce((total, expense) => total + expense.amount, 0),
           expenses
             .filter((expense) => expense.category === 'dailyNecessities')
-            .reduce((total, expense) => total + expense.amount, 0)
+            .reduce((total, expense) => total + expense.amount, 0),
         ],
         backgroundColor: [
           colors.blue[500],
           colors.red[500],
           colors.purple[500],
-          colors.yellow[500]
-        ]
-      }
-    ]
+          colors.yellow[500],
+        ],
+      },
+    ],
   };
 
   console.log(
@@ -167,93 +164,237 @@ export async function getServerSideProps(context: any) {
       totalExpenses: {
         thisMonth: calcTotalExpensesOfThisMonth(expenses),
         thisWeek: calcTotalExpensesOfThisWeek(expenses),
-        today: calcTotalExpensesOfToday(expenses)
-      }
-    }
+        today: calcTotalExpensesOfToday(expenses),
+      },
+    },
   };
 }
 
+function IconOne() {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
+      <path
+        d="M24 11L35.2583 17.5V30.5L24 37L12.7417 30.5V17.5L24 11Z"
+        stroke="#FB923C"
+        strokeWidth="2"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M16.7417 19.8094V28.1906L24 32.3812L31.2584 28.1906V19.8094L24 15.6188L16.7417 19.8094Z"
+        stroke="#FDBA74"
+        strokeWidth="2"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M20.7417 22.1196V25.882L24 27.7632L27.2584 25.882V22.1196L24 20.2384L20.7417 22.1196Z"
+        stroke="#FDBA74"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function IconTwo() {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
+      <path
+        d="M28.0413 20L23.9998 13L19.9585 20M32.0828 27.0001L36.1242 34H28.0415M19.9585 34H11.8755L15.9171 27"
+        stroke="#FB923C"
+        strokeWidth="2"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M18.804 30H29.1963L24.0001 21L18.804 30Z"
+        stroke="#FDBA74"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function IconThree() {
+  return (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
+      <rect x="13" y="32" width="2" height="4" fill="#FDBA74" />
+      <rect x="17" y="28" width="2" height="8" fill="#FDBA74" />
+      <rect x="21" y="24" width="2" height="12" fill="#FDBA74" />
+      <rect x="25" y="20" width="2" height="16" fill="#FDBA74" />
+      <rect x="29" y="16" width="2" height="20" fill="#FB923C" />
+      <rect x="33" y="12" width="2" height="24" fill="#FB923C" />
+    </svg>
+  );
+}
+
+const solutions = [
+  {
+    id: 1,
+    name: 'Insights',
+    description: 'Measure actions your users take',
+    amount: '$2,456.00',
+    icon: IconOne,
+    date: dayjs().format('MMM DD'),
+  },
+  {
+    id: 2,
+    name: 'Automations',
+    description: 'Create your own targeted content',
+    href: '##',
+    amount: '$1,456.00',
+    icon: IconTwo,
+    date: dayjs().format('MMM DD'),
+  },
+  {
+    id: 3,
+    name: 'Reports',
+    description: 'Keep track of your growth',
+    href: '##',
+    amount: '$1,234.00',
+    icon: IconThree,
+    date: dayjs().format('MMM DD'),
+  },
+];
+
 export default function Home({
-                               expenses = [],
-                               chartData = { datasets: [] },
-                               totalExpenses = { thisMonth: 0, thisWeek: 0, today: 0 }
-                             }) {
+  expenses = [],
+  chartData = { datasets: [] },
+  totalExpenses = { thisMonth: 0, thisWeek: 0, today: 0 },
+}) {
   const now = useMemo(() => dayjs(), []);
 
   return (
     <Layout>
-      <div
-        className='m-0 antialiased font-normal text-left leading-default relative h-full max-h-screen transition-all duration-200 ease-soft-in-out xl:ml-68 rounded-xl max-w-[40rem] mx-auto'>
-        <div className='w-full p-6 mx-auto'>
-          <div className='flex flex-wrap -mx-3'>
-            <div className='relative z-20 w-full max-w-full px-3 lg:flex-0 shrink-0'>
-              <div
-                className='relative flex flex-col min-w-0 break-words bg-transparent border-0 border-solid shadow-none border-black-125 rounded-2xl bg-clip-border'>
-                <div className='flex-auto p-4'>
-                  <div className='flex justify-center'>
-                    <h2 className='inline-block mb-2 text-3xl font-extrabold tracking-tight text-black'>
-                      {now.format('MMMM YYYY')}
-                    </h2>
-                  </div>
-                </div>
-              </div>
-
-              <div className='flex mb-8'>
-                <div className='mr-4 p-6 w-full rounded-2xl shadow-lg'>
-                  <div className='font-semibold text-[#00a86b] mb-4 flex items-center'>
-                    <HiArrowDownLeft className='mr-2' size={20} />
-                    Income
-                  </div>
-                  <div className='text-xl font-bold text-gray-700'>
-                    <span className='mr-0.5'>$</span>
-                    5,000.00
-                    <span className='ml-1 text-sm font-normal'>(USD)</span>
-                  </div>
-                </div>
-
-                <div className='p-6 w-full rounded-2xl shadow-lg'>
-                  <div className='font-semibold text-[#fd3c4a] mb-4 flex items-center'>
-                    <HiArrowUpRight className='mr-2' size={20} />
-                    Expenses
-                  </div>
-                  <div className='text-xl font-bold text-gray-700'>
-                    <span className='mr-0.5'>$</span>
-                    5,000.00
-                    <span className='ml-1 text-sm font-normal'>(USD)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className='[&>*:not(:last-child)]:mb-4'>
-                <div>
-                  <div className='flex'>
-                    <div className='text-black font-bold text-2xl my-2'>
-                      Transactions
-                    </div>
-
-                    <div className='flex justify-center items-center'>
-                      <div className='m-1 p-1 hover:bg-gray-200 rounded-lg'>
-                        <HiAdjustmentsVertical className='h-5 w-5 text-gray-500 ' />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className='[&>*]:shadow-md [&>*]:m-1 grid md:grid-cols-2'>
-                    {[0, 0, 0, 0, 0, 0, 0, 0, 0].map((_, index) => (
-                      <Transaction
-                        key={index}
-                        type={index % 3 <= 1 ? 'income' : 'expense'}
-                        name='Spotify'
-                        description='description'
-                        amount={1000}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="mx-auto max-w-[54rem]">
+        <div className="mt-8 mb-4">
+          <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent">
+            Welcome back !
+          </span>
         </div>
+
+        <Paper
+          className="grid grid-flow-col grid-cols-[1fr_1px_1fr] grid-rows-[1fr_1px_1fr] rounded-2xl bg-white"
+          shadow="xs"
+          radius="lg"
+          mb="md"
+        >
+          <div className="m-5 flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-gray-500">
+              Total Income
+            </h3>
+            <div className="text-2xl font-medium">$10,456.00</div>
+            <div className="mt-auto">↑ +12.1 % from last weeks</div>
+          </div>
+
+          <Divider />
+
+          <div className="m-5 flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-gray-500">
+              Total Expenses
+            </h3>
+            <div className="text-2xl font-medium">$2,456.00</div>
+            <div className="mt-auto">↓ -2.5 % from last weeks</div>
+          </div>
+
+          <Divider className="row-span-3" orientation="vertical" />
+
+          <div className="m-5 flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-gray-500">
+              Spending Limit
+            </h3>
+            <div>$2,456.00 used from $10,000.00</div>
+            <Progress
+              className="mt-auto"
+              sections={[{ value: 40, color: '#68b5e8' }]}
+            />
+          </div>
+
+          <Divider />
+
+          <div className="m-5 flex flex-col justify-center">
+            <h3 className="text-lg font-semibold text-gray-500">
+              Expense Analytics
+            </h3>
+            <Progress
+              className="my-auto"
+              radius="xl"
+              size={20}
+              sections={[
+                {
+                  value: 33,
+                  color: 'pink',
+                  label: 'Documents',
+                },
+                {
+                  value: 28,
+                  color: 'grape',
+                  label: 'Apps',
+                },
+                {
+                  value: 5,
+                  color: 'violet',
+                  label: 'Other',
+                },
+              ]}
+            />
+          </div>
+        </Paper>
+
+        <Paper shadow="xs" radius="lg" p="lg">
+          <Title order={2} mb="xs">
+            Transitions
+          </Title>
+          <div className="grid bg-white lg:grid-cols-2">
+            {solutions.map((item) => (
+              <div
+                key={item.id}
+                className="m-2 flex items-center rounded-lg hover:bg-orange-100/50"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
+                  <item.icon aria-hidden="true" />
+                </div>
+                <div className="ml-4 flex-1">
+                  <p className="text-sm font-medium text-gray-900">
+                    {item.name}
+                  </p>
+                  <p className="text-sm font-light text-gray-500">
+                    {item.description}
+                  </p>
+                </div>
+                <div className="ml-4 text-right">
+                  <p className="text-sm font-medium text-gray-900">
+                    {item.amount}
+                  </p>
+                  <p className="text-sm font-light text-gray-500">
+                    {item.date}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Paper>
       </div>
     </Layout>
   );
