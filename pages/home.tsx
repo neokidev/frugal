@@ -8,7 +8,8 @@ import colors from 'tailwindcss/colors';
 import minMax from 'dayjs/plugin/minMax';
 import isBetween from 'dayjs/plugin/isBetween';
 import isToday from 'dayjs/plugin/isToday';
-import { Divider, Paper, Progress, Title } from '@mantine/core';
+import { Paper, Progress } from '@mantine/core';
+import { HiArrowNarrowDown, HiArrowNarrowUp } from 'react-icons/hi';
 
 dayjs.extend(minMax);
 dayjs.extend(isBetween);
@@ -287,92 +288,116 @@ export default function Home({
 
   return (
     <Layout>
-      <div className="mx-auto max-w-[54rem]">
+      <div className="mx-auto max-w-[54rem] px-12">
         <div className="mt-8 mb-4">
           <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-3xl font-extrabold text-transparent">
             Welcome back !
           </span>
         </div>
 
-        <Paper
-          className="grid grid-flow-col grid-cols-[1fr_1px_1fr] grid-rows-[1fr_1px_1fr] rounded-2xl bg-white"
-          shadow="xs"
-          radius="lg"
-          mb="md"
-        >
-          <div className="m-5 flex flex-col justify-center">
-            <h3 className="text-lg font-semibold text-gray-500">
-              Total Income
-            </h3>
-            <div className="text-2xl font-medium">$10,456.00</div>
-            <div className="mt-auto">↑ +12.1 % from last weeks</div>
-          </div>
+        <div className="mb-2 grid grid-flow-col grid-rows-3 gap-2">
+          <Paper className="rounded-2xl bg-white" shadow="xs" radius="lg">
+            <div className="m-5 flex flex-col justify-center">
+              <h3 className="font-light text-gray-500">Total Balance</h3>
+              <div className="my-4 text-3xl font-medium">$32,456.00</div>
+              <div className="mt-auto">
+                <p className="flex items-center">
+                  <HiArrowNarrowUp className="text-[#29B278]" size={20} />
+                  <span className="mr-1 text-lg font-medium text-[#29B278]">
+                    +12.1 %
+                  </span>
+                  <span className="mt-0.5 text-sm text-gray-500">
+                    from last weeks
+                  </span>
+                </p>
+              </div>
+            </div>
+          </Paper>
 
-          <Divider />
+          <Paper className="rounded-2xl bg-white" shadow="xs" radius="lg">
+            <div className="m-5 flex flex-col justify-center">
+              <h3 className="font-light text-gray-500">Total Income</h3>
+              <div className="my-4 text-3xl font-medium">$10,456.00</div>
+              <div className="mt-auto">
+                <p className="flex items-center">
+                  <HiArrowNarrowUp className="text-[#29B278]" size={20} />
+                  <span className="mr-1 text-lg font-medium text-[#29B278]">
+                    +12.1 %
+                  </span>
+                  <span className="mt-0.5 text-sm text-gray-500">
+                    from last weeks
+                  </span>
+                </p>
+              </div>
+            </div>
+          </Paper>
 
-          <div className="m-5 flex flex-col justify-center">
-            <h3 className="text-lg font-semibold text-gray-500">
-              Total Expenses
-            </h3>
-            <div className="text-2xl font-medium">$2,456.00</div>
-            <div className="mt-auto">↓ -2.5 % from last weeks</div>
-          </div>
+          <Paper className="rounded-2xl bg-white" shadow="xs" radius="lg">
+            <div className="m-5 flex flex-col justify-center">
+              <h3 className="font-light text-gray-500">Total Expenses</h3>
+              <div className="my-4 text-3xl font-medium">$2,456.00</div>
+              <div className="mt-auto">
+                <p className="flex items-center">
+                  <HiArrowNarrowDown className="text-[#F57474]" size={20} />
+                  <span className="mr-1 text-lg font-medium text-[#F57474]">
+                    -2.5 %
+                  </span>
+                  <span className="mt-0.5 text-sm text-gray-500">
+                    from last weeks
+                  </span>
+                </p>
+              </div>
+            </div>
+          </Paper>
 
-          <Divider className="row-span-3" orientation="vertical" />
+          <Paper
+            className="row-span-2 rounded-2xl bg-white"
+            shadow="xs"
+            radius="lg"
+          >
+            <div className="m-5 flex flex-col justify-center">
+              <h3 className="font-light text-gray-500">Dummy</h3>
+            </div>
+          </Paper>
 
-          <div className="m-5 flex flex-col justify-center">
-            <h3 className="text-lg font-semibold text-gray-500">
-              Spending Limit
-            </h3>
-            <div>$2,456.00 used from $10,000.00</div>
-            <Progress
-              className="mt-auto"
-              sections={[{ value: 40, color: '#68b5e8' }]}
-            />
-          </div>
-
-          <Divider />
-
-          <div className="m-5 flex flex-col justify-center">
-            <h3 className="text-lg font-semibold text-gray-500">
-              Expense Analytics
-            </h3>
-            <Progress
-              className="my-auto"
-              radius="xl"
-              size={20}
-              sections={[
-                {
-                  value: 33,
-                  color: 'pink',
-                  label: 'Documents',
-                },
-                {
-                  value: 28,
-                  color: 'grape',
-                  label: 'Apps',
-                },
-                {
-                  value: 5,
-                  color: 'violet',
-                  label: 'Other',
-                },
-              ]}
-            />
-          </div>
-        </Paper>
+          <Paper className="rounded-2xl bg-white" shadow="xs" radius="lg">
+            <div className="m-5 flex flex-col justify-center">
+              <h3 className="font-light text-gray-500">Expense Analytics</h3>
+              <Progress
+                className="mt-4"
+                radius="xl"
+                size={20}
+                sections={[
+                  {
+                    value: 33,
+                    color: 'pink',
+                    label: 'Documents',
+                  },
+                  {
+                    value: 28,
+                    color: 'grape',
+                    label: 'Apps',
+                  },
+                  {
+                    value: 5,
+                    color: 'violet',
+                    label: 'Other',
+                  },
+                ]}
+              />
+            </div>
+          </Paper>
+        </div>
 
         <Paper shadow="xs" radius="lg" p="lg">
-          <Title order={2} mb="xs">
-            Transitions
-          </Title>
-          <div className="grid bg-white lg:grid-cols-2">
+          <h2 className="mb-2 text-2xl font-bold">Transitions</h2>
+          <div className="grid bg-white">
             {solutions.map((item) => (
               <div
                 key={item.id}
-                className="m-2 flex items-center rounded-lg hover:bg-orange-100/50"
+                className="m-2 flex items-start rounded-lg hover:bg-orange-100/50"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white">
                   <item.icon aria-hidden="true" />
                 </div>
                 <div className="ml-4 flex-1">
@@ -384,7 +409,7 @@ export default function Home({
                   </p>
                 </div>
                 <div className="ml-4 text-right">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-[#29B278]">
                     {item.amount}
                   </p>
                   <p className="text-sm font-light text-gray-500">
