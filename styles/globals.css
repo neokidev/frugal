@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-color: blanchedalmond;
+h1, h2, h3, h4, h5, h6 {
+    color: #344767;
+}
+
+h4, h5, h6 {
+    font-weight: 600;
 }
