@@ -1,3 +1,5 @@
+import { AddTransactionForm } from "./AddTransactionForm";
+
 function IconOne() {
   return (
     <svg
@@ -113,93 +115,112 @@ export const Home = () => {
         <div className="text-2xl font-extrabold text-[#344767]">
           Welcome Back!
         </div>
-        <div className="-mx-3 flex flex-wrap">
-          <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
-            <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
-              <div className="rounded-t-2xl p-4">
-                <p className="text-sm font-semibold capitalize leading-normal">
-                  total balance
-                </p>
-                <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
-                <p>
-                  <span className="text-sm font-bold leading-normal text-lime-500">
-                    {"+90% "}
-                  </span>
-                  <span className="text-xs font-semibold leading-normal text-slate-400">
-                    from last weeks
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
-            <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
-              <div className="rounded-t-2xl p-4">
-                <p className="text-sm font-semibold capitalize leading-normal">
-                  income
-                </p>
-                <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
-                <p>
-                  <span className="text-sm font-bold leading-normal text-lime-500">
-                    {"+90% "}
-                  </span>
-                  <span className="text-xs font-semibold leading-normal text-slate-400">
-                    from last weeks
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
-            <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
-              <div className="rounded-t-2xl p-4">
-                <p className="text-sm font-semibold capitalize leading-normal">
-                  expenses
-                </p>
-                <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
-                <p>
-                  <span className="text-sm font-bold leading-normal text-red-500">
-                    {"-90% "}
-                  </span>
-                  <span className="text-xs font-semibold leading-normal text-slate-400">
-                    from last weeks
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 flex flex-wrap">
-          <div className="flex-0 flex w-full max-w-full shrink-0 flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
-            <div className="p-4">
-              <h6 className="mb-2">Transitions</h6>
-
-              <div className="grid md:grid-cols-2">
-                {solutions.map((item) => (
-                  <div
-                    key={item.id}
-                    className="mx-1 flex items-start rounded-lg p-2 hover:bg-orange-50"
-                  >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white">
-                      <item.icon aria-hidden="true" />
-                    </div>
-                    <div className="ml-4 flex-1">
-                      <p className="mb-1 text-sm font-semibold text-slate-700">
-                        {item.name}
-                      </p>
-                      <p className="text-xs">{item.description}</p>
-                    </div>
-                    <div className="ml-4 text-right">
-                      <p className="mb-1 text-sm font-semibold text-red-500">
-                        {item.amount}
-                      </p>
-                      <p className="text-xs">{item.date}</p>
-                    </div>
+        <div className="flex w-full">
+          <div className="w-full lg:mr-4 lg:w-8/12">
+            <div className="-mx-3 flex flex-wrap">
+              <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
+                <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
+                  <div className="rounded-t-2xl p-4">
+                    <p className="text-sm font-semibold capitalize leading-normal">
+                      total balance
+                    </p>
+                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <p>
+                      <span className="text-sm font-bold leading-normal text-lime-500">
+                        {"+90% "}
+                      </span>
+                      <span className="text-xs font-semibold leading-normal text-slate-400">
+                        from last weeks
+                      </span>
+                    </p>
                   </div>
-                ))}
+                </div>
+              </div>
+
+              <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
+                <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
+                  <div className="rounded-t-2xl p-4">
+                    <p className="text-sm font-semibold capitalize leading-normal">
+                      income
+                    </p>
+                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <p>
+                      <span className="text-sm font-bold leading-normal text-lime-500">
+                        {"+90% "}
+                      </span>
+                      <span className="text-xs font-semibold leading-normal text-slate-400">
+                        from last weeks
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
+                <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
+                  <div className="rounded-t-2xl p-4">
+                    <p className="text-sm font-semibold capitalize leading-normal">
+                      expenses
+                    </p>
+                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <p>
+                      <span className="text-sm font-bold leading-normal text-red-500">
+                        {"-90% "}
+                      </span>
+                      <span className="text-xs font-semibold leading-normal text-slate-400">
+                        from last weeks
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap">
+              <div className="flex-0 flex w-full max-w-full shrink-0 flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
+                <div className="p-4">
+                  <h6 className="mb-2">Transitions</h6>
+
+                  <div className="grid md:grid-cols-2">
+                    {solutions.map((item) => (
+                      <div
+                        key={item.id}
+                        className="mx-1 flex items-start rounded-lg p-2 hover:bg-orange-50"
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white">
+                          <item.icon aria-hidden="true" />
+                        </div>
+                        <div className="ml-4 flex-1">
+                          <p className="mb-1 text-sm font-semibold text-slate-700">
+                            {item.name}
+                          </p>
+                          <p className="text-xs">{item.description}</p>
+                        </div>
+                        <div className="ml-4 text-right">
+                          <p className="mb-1 text-sm font-semibold text-red-500">
+                            {item.amount}
+                          </p>
+                          <p className="text-xs">{item.date}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden lg:ml-4 lg:block lg:w-4/12">
+            <div className="mt-6 flex flex-wrap">
+              <div className="flex-0 flex w-full max-w-full shrink-0 flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
+                <div className="p-4">
+                  <h6 className="mb-2">Add transaction</h6>
+
+                  <div>
+                    <AddTransactionForm />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
