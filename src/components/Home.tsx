@@ -117,7 +117,7 @@ export const Home = () => {
         </div>
 
         <div className="flex w-full">
-          <div className="w-full lg:mr-4 lg:w-8/12">
+          <div className="w-full lg:mr-4">
             <div className="-mx-3 flex flex-wrap">
               <div className="mt-6 w-full max-w-full shrink-0 px-3 md:w-1/3">
                 <div className="flex flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
@@ -211,15 +211,12 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="hidden lg:ml-4 lg:block lg:w-4/12">
+          <div className="hidden lg:ml-4 lg:block lg:w-96">
             <div className="mt-6 flex flex-wrap">
               <div className="flex-0 flex w-full max-w-full shrink-0 flex-col overflow-hidden break-words rounded-2xl border border-black/5 bg-white shadow-md shadow-black/5">
                 <div className="p-4">
                   <h6 className="mb-2">Add transaction</h6>
-
-                  <div>
-                    <AddTransactionForm />
-                  </div>
+                  <AddTransactionForm />
                 </div>
               </div>
             </div>
