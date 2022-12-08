@@ -3,33 +3,27 @@ import { NumberInput, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { z } from "zod";
 import dayjs from "dayjs";
+import type { CreateExpenseInput } from "../schemas/expenses";
+import { createExpenseSchema } from "../schemas/expenses";
+import { useMutateExpenses } from "../hooks/useMutateExpenses";
 
 export const AddTransactionForm = () => {
-  const form = useForm({
+  const { createExpenseMutation } = useMutateExpenses();
+
+  const form = useForm<CreateExpenseInput>({
     initialValues: {
       name: "",
       description: "",
-      amount: undefined,
+      amount: 0,
       date: dayjs().toDate(),
     },
-
-    validate: zodResolver(
-      z.object({
-        name: z
-          .string({ required_error: "Name is required" })
-          .min(1, "Name is required"),
-        description: z.string().optional(),
-        amount: z.number({ required_error: "Amount is required" }).min(0.01),
-        date: z.date({
-          required_error: "Date is required",
-          invalid_type_error: "Date is required",
-        }),
-      })
-    ),
+    validate: zodResolver(createExpenseSchema),
   });
 
   return (
-    <form onSubmit={form.onSubmit((values) => console.log("values:", values))}>
+    <form
+      onSubmit={form.onSubmit((values) => createExpenseMutation.mutate(values))}
+    >
       <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
       <TextInput
         mt="sm"
