@@ -22,7 +22,10 @@ export const AddTransactionForm = () => {
 
   return (
     <form
-      onSubmit={form.onSubmit((values) => createExpenseMutation.mutate(values))}
+      onSubmit={form.onSubmit((values) => {
+        createExpenseMutation.mutate(values);
+        form.reset();
+      })}
     >
       <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
       <TextInput
