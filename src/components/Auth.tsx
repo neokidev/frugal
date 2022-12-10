@@ -1,16 +1,16 @@
-import { signIn } from "next-auth/react";
-import Image from "next/image";
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 const loginButtonItems = [
   {
-    label: "Google",
+    label: 'Google',
     icon: <Image src="/google.svg" alt="Google" width={24} height={24} />,
-    onClick: () => signIn("google"),
+    onClick: () => signIn('google'),
   },
   {
-    label: "GitHub",
+    label: 'GitHub',
     icon: <Image src="/github.svg" alt="GitHub" width={24} height={24} />,
-    onClick: () => signIn("github"),
+    onClick: () => signIn('github'),
   },
 ];
 
@@ -29,7 +29,7 @@ export const Auth = () => {
             >
               {icon}
               <div className="text-sm text-gray-800">
-                {"Login with "}
+                {'Login with '}
                 <span className="font-semibold">{label}</span>
               </div>
             </button>

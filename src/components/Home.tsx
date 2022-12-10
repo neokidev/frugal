@@ -1,5 +1,5 @@
-import { AddTransactionForm } from "./AddTransactionForm";
-import { TransactionList } from "./TransactionList";
+import { AddTransactionForm } from './AddTransactionForm';
+import { TransactionList } from './TransactionList';
 
 export const Home = () => {
   return (
@@ -18,10 +18,10 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       total balance
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
                     <p>
                       <span className="text-sm font-bold leading-normal text-lime-500">
-                        {"+90% "}
+                        {'+90% '}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400">
                         from last weeks
@@ -37,10 +37,10 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       income
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
                     <p>
                       <span className="text-sm font-bold leading-normal text-lime-500">
-                        {"+90% "}
+                        {'+90% '}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400">
                         from last weeks
@@ -56,10 +56,10 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       expenses
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{" $130,832 "}</h5>
+                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
                     <p>
                       <span className="text-sm font-bold leading-normal text-red-500">
-                        {"-90% "}
+                        {'-90% '}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400">
                         from last weeks

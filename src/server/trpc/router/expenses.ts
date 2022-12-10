@@ -1,5 +1,5 @@
-import { router, protectedProcedure, publicProcedure } from "../trpc";
-import { createExpenseSchema } from "../../../schemas/expenses";
+import { createExpenseSchema } from '../../../schemas/expenses';
+import { protectedProcedure, publicProcedure, router } from '../trpc';
 
 export const expensesRouter = router({
   createExpense: protectedProcedure
@@ -22,7 +22,7 @@ export const expensesRouter = router({
         userId: ctx.session?.user?.id,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   }),

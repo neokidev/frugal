@@ -1,20 +1,20 @@
-import { useForm, zodResolver } from "@mantine/form";
-import { NumberInput, TextInput } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
-import { z } from "zod";
-import dayjs from "dayjs";
-import type { CreateExpenseInput } from "../schemas/expenses";
-import { createExpenseSchema } from "../schemas/expenses";
-import { useMutateExpenses } from "../hooks/useMutateExpenses";
-import { Tab } from "@headlessui/react";
+import { Tab } from '@headlessui/react';
+import { NumberInput, TextInput } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
+import { useForm, zodResolver } from '@mantine/form';
+import dayjs from 'dayjs';
+
+import { useMutateExpenses } from '../hooks/useMutateExpenses';
+import type { CreateExpenseInput } from '../schemas/expenses';
+import { createExpenseSchema } from '../schemas/expenses';
 
 export const AddTransactionForm = () => {
   const { createExpenseMutation } = useMutateExpenses();
 
   const form = useForm<CreateExpenseInput>({
     initialValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       amount: 0,
       date: dayjs().toDate(),
     },
@@ -28,8 +28,8 @@ export const AddTransactionForm = () => {
           className={({ selected }) =>
             `flex inline-flex w-full items-center justify-center rounded-t-lg border-b-2 p-1 focus:outline-none ${
               selected
-                ? "border-blue-600 text-blue-600"
-                : "border-gray-200 hover:border-gray-300 hover:text-gray-600"
+                ? 'border-blue-600 text-blue-600'
+                : 'border-gray-200 hover:border-gray-300 hover:text-gray-600'
             }`
           }
         >
@@ -39,8 +39,8 @@ export const AddTransactionForm = () => {
           className={({ selected }) =>
             `flex inline-flex w-full items-center justify-center rounded-t-lg border-b-2 p-1 focus:outline-none ${
               selected
-                ? "border-blue-600 text-blue-600"
-                : "border-gray-200 hover:border-gray-300 hover:text-gray-600"
+                ? 'border-blue-600 text-blue-600'
+                : 'border-gray-200 hover:border-gray-300 hover:text-gray-600'
             }`
           }
         >
@@ -57,13 +57,13 @@ export const AddTransactionForm = () => {
           >
             <TextInput
               label="Name"
-              {...form.getInputProps("name")}
+              {...form.getInputProps('name')}
               withAsterisk
             />
             <TextInput
               mt="sm"
               label="Description"
-              {...form.getInputProps("description")}
+              {...form.getInputProps('description')}
             />
             <NumberInput
               mt="sm"
@@ -72,14 +72,14 @@ export const AddTransactionForm = () => {
               step={0.01}
               precision={2}
               withAsterisk
-              {...form.getInputProps("amount")}
+              {...form.getInputProps('amount')}
             />
             <DatePicker
               mt="sm"
               label="Date"
               inputFormat="YYYY MMM DD"
               withAsterisk
-              {...form.getInputProps("date")}
+              {...form.getInputProps('date')}
             />
             <button
               type="submit"

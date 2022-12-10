@@ -1,6 +1,7 @@
-import { trpc } from "../utils/trpc";
-import { TransactionItem } from "./TransactionItem";
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+
+import { trpc } from '../utils/trpc';
+import { TransactionItem } from './TransactionItem';
 
 function IconOne() {
   return (
@@ -100,11 +101,11 @@ export const TransactionList = () => {
         <TransactionItem
           key={expense.id}
           name={expense.name}
-          description={expense.description || ""}
+          description={expense.description || ''}
           amount={Number(expense.amount)
             .toFixed(2)
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
-          date={dayjs(expense.date).format("MMM DD")}
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+          date={dayjs(expense.date).format('MMM DD')}
           icon={mockIcons[index % mockIcons.length]!}
         />
       ))}

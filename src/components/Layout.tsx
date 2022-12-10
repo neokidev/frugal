@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-import Head from "next/head";
-import { signOut, useSession } from "next-auth/react";
-import { Menu, Transition } from "@headlessui/react";
-import { ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
-import { Fragment } from "react";
+import { Menu, Transition } from '@headlessui/react';
+import { ArrowRightOnRectangleIcon, UserIcon } from '@heroicons/react/20/solid';
+import Head from 'next/head';
+import Image from 'next/image';
+import { signOut, useSession } from 'next-auth/react';
+import type { ReactNode } from 'react';
+import { Fragment } from 'react';
 
 type Props = {
   title: string;
@@ -33,7 +33,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                       {user?.image ? (
                         <Image
                           src={user?.image}
-                          alt={user?.name || "Avatar"}
+                          alt={user?.name || 'Avatar'}
                           fill
                         />
                       ) : (
@@ -54,7 +54,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                       <Menu.Item>
                         <div className="px-4 py-3">
                           <div className="text-left text-sm text-gray-700">
-                            {"Signed in as "}
+                            {'Signed in as '}
                             <span className="font-semibold">{user?.name}</span>
                           </div>
                         </div>
@@ -65,8 +65,8 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                             <button
                               className={`${
                                 active
-                                  ? "bg-blue-500 text-white"
-                                  : "text-gray-700"
+                                  ? 'bg-blue-500 text-white'
+                                  : 'text-gray-700'
                               } flex w-full items-center justify-start px-4 py-1 text-sm`}
                               onClick={() => signOut()}
                             >
