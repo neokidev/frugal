@@ -25,8 +25,16 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
         <header>
           <div className="flex justify-center border-b bg-white py-2">
             <div className="flex w-full max-w-[80rem] justify-between px-8">
-              <div />
-              <div>
+              <div className="relative flex w-full">
+                <Image
+                  src="/frugal.svg"
+                  alt="Frugal"
+                  width={160}
+                  height={0}
+                  className="-mt-2.5"
+                />
+              </div>
+              <div className="flex w-full justify-end">
                 <Menu as="div" className="ml-5">
                   <div>
                     <Menu.Button className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full">
