@@ -4,9 +4,9 @@ import { DatePicker } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
-import { useMutateExpenses } from '../hooks/useMutateExpenses';
-import type { CreateExpenseInput } from '../schemas/expenses';
-import { createExpenseSchema } from '../schemas/expenses';
+import { useMutateExpenses } from '@/hooks/useMutateExpenses';
+import type { CreateExpenseInput } from '@/schemas/expenses';
+import { createExpenseSchema } from '@/schemas/expenses';
 
 export const AddTransactionForm = () => {
   const { createExpenseMutation } = useMutateExpenses();

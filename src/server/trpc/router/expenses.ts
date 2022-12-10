@@ -1,5 +1,9 @@
-import { createExpenseSchema } from '../../../schemas/expenses';
-import { protectedProcedure, publicProcedure, router } from '../trpc';
+import { createExpenseSchema } from '@/schemas/expenses';
+import {
+  protectedProcedure,
+  publicProcedure,
+  router,
+} from '@/server/trpc/trpc';
 
 export const expensesRouter = router({
   createExpense: protectedProcedure

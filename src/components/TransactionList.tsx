@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import { trpc } from '../utils/trpc';
+import { trpc } from '@/utils/trpc';
+
 import { TransactionItem } from './TransactionItem';
 
 function IconOne() {
