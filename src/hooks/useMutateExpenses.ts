@@ -8,8 +8,8 @@ export const useMutateExpenses = () => {
       const previousExpenses = utils.expenses.getExpenses.getData();
       if (previousExpenses) {
         utils.expenses.getExpenses.setData(undefined, [
-          ...previousExpenses,
           res,
+          ...previousExpenses,
         ]);
       }
     },
