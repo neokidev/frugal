@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { decimalToString } from '@/utils/decimal';
 import { trpc } from '@/utils/trpc';
 
 import { TransactionItem } from './TransactionItem';
@@ -103,9 +104,7 @@ export const TransactionList = () => {
           key={expense.id}
           name={expense.name}
           description={expense.description || ''}
-          amount={Number(expense.amount)
-            .toFixed(2)
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+          amount={decimalToString(expense.amount, 2)}
           date={dayjs(expense.date).format('MMM DD')}
           icon={mockIcons[index % mockIcons.length]!}
         />

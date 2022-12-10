@@ -1,3 +1,5 @@
+import { Decimal } from '@prisma/client/runtime';
+
 import { createExpenseSchema } from '@/schemas/expense';
 import {
   protectedProcedure,
@@ -37,6 +39,23 @@ export const expenseRouter = router({
         createdAt: 'desc',
       },
     });
+  }),
+  getTotalExpensesAmount: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.expense
+      .findMany({
+        where: {
+          userId: ctx.session?.user?.id,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
+      .then((expenses) => {
+        return expenses.reduce(
+          (total, expense) => total.add(expense.amount),
+          new Decimal(0)
+        );
+      });
   }),
   getAllExpenseCategories: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.expenseCategory.findMany({

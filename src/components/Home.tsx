@@ -1,7 +1,24 @@
+import { decimalToString } from '@/utils/decimal';
+import { trpc } from '@/utils/trpc';
+
 import { AddTransactionForm } from './AddTransactionForm';
 import { TransactionList } from './TransactionList';
 
 export const Home = () => {
+  const {
+    data: totalExpensesAmount,
+    isLoading,
+    error,
+  } = trpc.expense.getTotalExpensesAmount.useQuery();
+
+  if (isLoading) {
+    return <p>Loading transactions...</p>;
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-[80rem] p-6">
       <div className="w-full px-3">
@@ -56,7 +73,10 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       expenses
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
+                    <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
+                      totalExpensesAmount,
+                      2
+                    )} `}</h5>
                     <p>
                       <span className="text-sm font-bold leading-normal text-red-500">
                         {'-90% '}
