@@ -1,25 +1,37 @@
 import { Tab } from '@headlessui/react';
-import { NumberInput, TextInput } from '@mantine/core';
+import { NumberInput, Select, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
-import { useMutateExpenses } from '@/hooks/useMutateExpenses';
-import type { CreateExpenseInput } from '@/schemas/expenses';
-import { createExpenseSchema } from '@/schemas/expenses';
+import { useMutateExpense } from '@/hooks/useMutateExpense';
+import type { CreateExpenseInput } from '@/schemas/expense';
+import { createExpenseSchema } from '@/schemas/expense';
+import { trpc } from '@/utils/trpc';
 
 export const AddTransactionForm = () => {
-  const { createExpenseMutation } = useMutateExpenses();
+  const { data, isLoading, error } =
+    trpc.expense.getAllExpenseCategories.useQuery();
+  const { createExpenseMutation } = useMutateExpense();
 
   const form = useForm<CreateExpenseInput>({
     initialValues: {
       name: '',
       description: '',
       amount: 0,
+      categoryId: '',
       date: dayjs().toDate(),
     },
     validate: zodResolver(createExpenseSchema),
   });
+
+  if (isLoading) {
+    return <p>Loading transactions...</p>;
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
 
   return (
     <Tab.Group>
@@ -80,6 +92,22 @@ export const AddTransactionForm = () => {
               inputFormat="YYYY MMM DD"
               withAsterisk
               {...form.getInputProps('date')}
+            />
+            <Select
+              mt="sm"
+              label="Category"
+              data={data.map((value) => ({
+                value: value.id,
+                label: value.name,
+              }))}
+              value={form.values.categoryId}
+              onChange={(value) =>
+                value && form.setFieldValue('categoryId', value)
+              }
+              nothingFound="Nobody here"
+              searchable
+              withAsterisk
+              {...form.getInputProps('categoryId')}
             />
             <button
               type="submit"

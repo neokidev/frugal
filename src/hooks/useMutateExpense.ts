@@ -1,13 +1,13 @@
 import { trpc } from '@/utils/trpc';
 
-export const useMutateExpenses = () => {
+export const useMutateExpense = () => {
   const utils = trpc.useContext();
 
-  const createExpenseMutation = trpc.expenses.createExpense.useMutation({
+  const createExpenseMutation = trpc.expense.createExpense.useMutation({
     onSuccess: (res) => {
-      const previousExpenses = utils.expenses.getExpenses.getData();
+      const previousExpenses = utils.expense.getExpenses.getData();
       if (previousExpenses) {
-        utils.expenses.getExpenses.setData(undefined, [
+        utils.expense.getExpenses.setData(undefined, [
           res,
           ...previousExpenses,
         ]);

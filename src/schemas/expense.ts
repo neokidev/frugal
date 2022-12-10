@@ -12,6 +12,7 @@ export const createExpenseSchema = z.object({
     required_error: 'Date is required',
     invalid_type_error: 'Date is required',
   }),
+  categoryId: z.string({ required_error: 'Category is required' }).cuid('Category is required'),
 });
 
 export type CreateExpenseInput = z.TypeOf<typeof createExpenseSchema>;

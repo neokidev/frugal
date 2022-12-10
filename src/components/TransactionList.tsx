@@ -86,7 +86,7 @@ function IconThree() {
 const mockIcons = [IconOne, IconTwo, IconThree];
 
 export const TransactionList = () => {
-  const { data, isLoading, error } = trpc.expenses.getExpenses.useQuery();
+  const { data, isLoading, error } = trpc.expense.getExpenses.useQuery();
 
   if (isLoading) {
     return <p>Loading transactions...</p>;
