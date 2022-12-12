@@ -3,6 +3,7 @@ type Props = {
   description: string;
   amount: string;
   date: string;
+  type: 'income' | 'expense';
   icon: () => JSX.Element;
 };
 
@@ -11,6 +12,7 @@ export const TransactionItem = ({
   description,
   amount,
   date,
+  type,
   icon: Icon,
 }: Props) => {
   return (
@@ -23,7 +25,13 @@ export const TransactionItem = ({
         <p className="text-xs">{description}</p>
       </div>
       <div className="ml-4 text-right">
-        <p className="mb-1 text-sm font-semibold text-red-500">$ {amount}</p>
+        <p
+          className={`mb-1 text-sm font-semibold ${
+            type === 'income' ? 'text-lime-500' : 'text-red-500'
+          }`}
+        >
+          $ {amount}
+        </p>
         <p className="text-xs">{date}</p>
       </div>
     </li>

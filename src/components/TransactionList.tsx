@@ -87,25 +87,50 @@ function IconThree() {
 const mockIcons = [IconOne, IconTwo, IconThree];
 
 export const TransactionList = () => {
-  const { data, isLoading, error } = trpc.expense.getExpenses.useQuery();
+  const {
+    data: expenses,
+    isLoading: isExpensesLoading,
+    error: getExpensesError,
+  } = trpc.expense.getExpenses.useQuery();
+  const {
+    data: incomes,
+    isLoading: isIncomesLoading,
+    error: getIncomesError,
+  } = trpc.income.getIncomes.useQuery();
 
-  if (isLoading) {
+  if (isExpensesLoading || isIncomesLoading) {
     return <p>Loading transactions...</p>;
   }
 
-  if (error) {
-    return <p>{error.message}</p>;
+  if (getExpensesError) {
+    return <p>{getExpensesError.message}</p>;
+  }
+
+  if (getIncomesError) {
+    return <p>{getIncomesError.message}</p>;
   }
 
   return (
     <ul className="grid md:grid-cols-2">
-      {data?.map((expense, index) => (
+      {expenses?.map((expense, index) => (
         <TransactionItem
           key={expense.id}
           name={expense.name}
           description={expense.description || ''}
           amount={decimalToString(expense.amount, 2)}
           date={dayjs(expense.date).format('MMM DD')}
+          type="expense"
+          icon={mockIcons[index % mockIcons.length]!}
+        />
+      ))}
+      {incomes?.map((income, index) => (
+        <TransactionItem
+          key={income.id}
+          name={income.name}
+          description={income.description || ''}
+          amount={decimalToString(income.amount, 2)}
+          date={dayjs(income.date).format('MMM DD')}
+          type="income"
           icon={mockIcons[index % mockIcons.length]!}
         />
       ))}

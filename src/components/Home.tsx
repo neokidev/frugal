@@ -1,22 +1,32 @@
 import { decimalToString } from '@/utils/decimal';
 import { trpc } from '@/utils/trpc';
 
-import { AddTransactionForm } from './AddTransactionForm';
+import { AddTransactionForm } from './AddTransactionForm/AddTransactionForm';
 import { TransactionList } from './TransactionList';
 
 export const Home = () => {
   const {
-    data: totalExpensesAmount,
-    isLoading,
-    error,
+    data: totalExpenses,
+    isLoading: isTotalExpensesLoading,
+    error: getTotalExpensesError,
   } = trpc.expense.getTotalExpensesAmount.useQuery();
 
-  if (isLoading) {
+  const {
+    data: totalIncomes,
+    isLoading: isTotalIncomesLoading,
+    error: getTotalIncomesError,
+  } = trpc.income.getTotalIncomesAmount.useQuery();
+
+  if (isTotalExpensesLoading && isTotalIncomesLoading) {
     return <p>Loading transactions...</p>;
   }
 
-  if (error) {
-    return <p>{error.message}</p>;
+  if (getTotalExpensesError) {
+    return <p>{getTotalExpensesError.message}</p>;
+  }
+
+  if (getTotalIncomesError) {
+    return <p>{getTotalIncomesError.message}</p>;
   }
 
   return (
@@ -54,7 +64,12 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       income
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
+                    {!!totalIncomes && (
+                      <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
+                        totalIncomes,
+                        2
+                      )} `}</h5>
+                    )}
                     <p>
                       <span className="text-sm font-bold leading-normal text-lime-500">
                         {'+90% '}
@@ -73,10 +88,12 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       expenses
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
-                      totalExpensesAmount,
-                      2
-                    )} `}</h5>
+                    {!!totalExpenses && (
+                      <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
+                        totalExpenses,
+                        2
+                      )} `}</h5>
+                    )}
                     <p>
                       <span className="text-sm font-bold leading-normal text-red-500">
                         {'-90% '}
