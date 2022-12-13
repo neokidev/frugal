@@ -17,7 +17,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
   const user = session?.user;
 
   return (
-    <div className="leading-default h-full min-h-screen bg-gray-100 font-open-sans text-base font-normal text-slate-500 antialiased">
+    <div className="leading-default h-full min-h-screen bg-gray-100 text-base font-normal text-slate-500 antialiased">
       <Head>
         <title>{title}</title>
       </Head>
