@@ -1,10 +1,17 @@
 import { Menu, Transition } from '@headlessui/react';
-import { ArrowRightOnRectangleIcon, UserIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowRightOnRectangleIcon,
+  MoonIcon,
+  SunIcon,
+  UserIcon,
+} from '@heroicons/react/20/solid';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import type { ReactNode } from 'react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+
+import { useToggleColorTheme } from '@/hooks/useToggleColorTheme';
 
 type Props = {
   title: string;
@@ -16,14 +23,24 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
   const { data: session } = useSession();
   const user = session?.user;
 
+  const { isDarkMode, toggleColorTheme } = useToggleColorTheme();
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   return (
-    <div className="leading-default h-full min-h-screen bg-gray-100 text-base font-normal text-slate-500 antialiased">
+    <div className="leading-default h-full min-h-screen bg-gray-100 text-base font-normal text-slate-500 antialiased dark:bg-gray-800 dark:text-slate-400">
       <Head>
         <title>{title}</title>
       </Head>
       {!hideHeader && (
         <header>
-          <div className="flex justify-center border-b bg-white py-2">
+          <div className="flex justify-center border-b bg-white py-2 dark:border-gray-700 dark:bg-gray-900">
             <div className="flex w-full max-w-[80rem] justify-between px-8">
               <div className="relative flex w-full">
                 <Image
@@ -35,6 +52,16 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                 />
               </div>
               <div className="flex w-full justify-end">
+                <div
+                  className="flex cursor-pointer items-center justify-center"
+                  onClick={toggleColorTheme}
+                >
+                  {isDarkMode ? (
+                    <MoonIcon className="h-8 w-8 rounded-lg p-1.5 text-gray-400 dark:hover:bg-gray-800" />
+                  ) : (
+                    <SunIcon className="h-8 w-8 rounded-lg p-1 text-gray-400 hover:bg-gray-100" />
+                  )}
+                </div>
                 <Menu as="div" className="ml-5">
                   <div>
                     <Menu.Button className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full">
@@ -45,7 +72,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                           fill
                         />
                       ) : (
-                        <UserIcon className="h-6 w-6 text-gray-400" />
+                        <UserIcon className="h-6 w-6 text-gray-400 dark:text-gray-500" />
                       )}
                     </Menu.Button>
                   </div>
@@ -58,10 +85,10 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute mt-2 min-w-[10rem] -translate-x-[calc(100%-3rem)] divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                    <Menu.Items className="absolute mt-2 min-w-[10rem] -translate-x-[calc(100%-3rem)] divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none dark:divide-gray-800 dark:bg-gray-700 dark:ring-white/5">
                       <Menu.Item>
                         <div className="px-4 py-3">
-                          <div className="text-left text-sm text-gray-700">
+                          <div className="text-left text-sm text-gray-700 dark:text-gray-300">
                             {'Signed in as '}
                             <span className="font-semibold">{user?.name}</span>
                           </div>
@@ -73,8 +100,8 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
                             <button
                               className={`${
                                 active
-                                  ? 'bg-blue-500 text-white'
-                                  : 'text-gray-700'
+                                  ? 'bg-blue-500 text-white dark:bg-blue-600 dark:text-gray-900 dark:text-white'
+                                  : 'text-gray-700 dark:text-gray-200'
                               } flex w-full items-center justify-start px-4 py-1 text-sm`}
                               onClick={() => signOut()}
                             >

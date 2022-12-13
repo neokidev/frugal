@@ -40,13 +40,31 @@ export const AddExpenseForm = () => {
         form.reset();
       })}
     >
-      <TextInput label="Name" {...form.getInputProps('name')} withAsterisk />
       <TextInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+        }}
+        label="Name"
+        withAsterisk
+        {...form.getInputProps('name')}
+      />
+      <TextInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+        }}
         mt="sm"
         label="Description"
         {...form.getInputProps('description')}
       />
       <NumberInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+          rightSection: 'dark:border-gray-400',
+          control: 'dark:text-white',
+        }}
         mt="sm"
         label="Amount"
         min={0.01}
@@ -56,6 +74,10 @@ export const AddExpenseForm = () => {
         {...form.getInputProps('amount')}
       />
       <DatePicker
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+        }}
         mt="sm"
         label="Date"
         inputFormat="YYYY MMM DD"
@@ -63,6 +85,12 @@ export const AddExpenseForm = () => {
         {...form.getInputProps('date')}
       />
       <Select
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+          dropdown: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+          item: 'dark:bg-gray-800 dark:border-gray-700 dark:text-white',
+        }}
         mt="sm"
         label="Category"
         data={data.map((value) => ({
@@ -78,7 +106,7 @@ export const AddExpenseForm = () => {
       />
       <button
         type="submit"
-        className="mt-4 w-full rounded-md bg-sky-400 p-2 text-center text-sm font-bold text-white shadow hover:bg-sky-500 focus:ring-2 focus:ring-sky-500/30"
+        className="mt-4 w-full rounded-md bg-sky-400 p-2 text-center text-sm font-bold text-white shadow hover:bg-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:bg-sky-600"
       >
         Save
       </button>
