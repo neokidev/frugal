@@ -27,13 +27,31 @@ export const AddIncomeForm = () => {
         form.reset();
       })}
     >
-      <TextInput label="Name" {...form.getInputProps('name')} withAsterisk />
       <TextInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+        }}
+        label="Name"
+        withAsterisk
+        {...form.getInputProps('name')}
+      />
+      <TextInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+        }}
         mt="sm"
         label="Description"
         {...form.getInputProps('description')}
       />
       <NumberInput
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+          control:
+            'dark:text-white dark:border-gray-600 dark:enabled:hover:bg-gray-700 dark:disabled:text-gray-600',
+        }}
         mt="sm"
         label="Amount"
         min={0.01}
@@ -43,6 +61,10 @@ export const AddIncomeForm = () => {
         {...form.getInputProps('amount')}
       />
       <DatePicker
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+        }}
         mt="sm"
         label="Date"
         inputFormat="YYYY MMM DD"
@@ -51,7 +73,7 @@ export const AddIncomeForm = () => {
       />
       <button
         type="submit"
-        className="mt-4 w-full rounded-md bg-sky-400 p-2 text-center text-sm font-bold text-white shadow hover:bg-sky-500 focus:ring-2 focus:ring-sky-500/30"
+        className="mt-4 w-full rounded-md bg-sky-400 p-2 text-center text-sm font-bold text-white shadow hover:bg-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:bg-sky-500 dark:hover:bg-sky-600"
       >
         Save
       </button>
