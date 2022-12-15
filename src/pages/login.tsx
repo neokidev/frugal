@@ -1,16 +1,18 @@
 import type { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
-import { Home } from '@/components/Home';
+import { Auth } from '@/components/Auth';
 import { Layout } from '@/components/Layout';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
-  if (!session) {
+  console.log('session:', session);
+
+  if (session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/',
         permanent: false,
       },
     };
@@ -21,12 +23,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-const Index = () => {
+const Login = () => {
   return (
-    <Layout title="Home">
-      <Home />
+    <Layout title="Login" hideHeader>
+      <Auth />
     </Layout>
   );
 };
 
-export default Index;
+export default Login;
