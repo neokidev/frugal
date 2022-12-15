@@ -11,7 +11,7 @@ import { signOut, useSession } from 'next-auth/react';
 import type { ReactNode } from 'react';
 import { Fragment, useEffect } from 'react';
 
-import { useToggleColorTheme } from '@/hooks/useToggleColorTheme';
+import { useToggleTheme } from '@/hooks/useToggleTheme';
 
 type Props = {
   title: string;
@@ -23,7 +23,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const { isDarkMode, toggleColorTheme } = useToggleColorTheme();
+  const { isDarkMode, toggleTheme } = useToggleTheme();
 
   useEffect(() => {
     if (isDarkMode) {
@@ -54,7 +54,7 @@ export const Layout = ({ title, hideHeader = false, children }: Props) => {
               <div className="flex w-full justify-end">
                 <div
                   className="flex cursor-pointer items-center justify-center"
-                  onClick={toggleColorTheme}
+                  onClick={toggleTheme}
                 >
                   {isDarkMode ? (
                     <MoonIcon className="h-8 w-8 rounded-lg p-1.5 text-gray-400 dark:hover:bg-gray-800" />
