@@ -7,8 +7,6 @@ import { Layout } from '@/components/Layout';
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
-  console.log('session:', session);
-
   if (session) {
     return {
       redirect: {
