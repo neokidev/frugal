@@ -1,4 +1,4 @@
-import { Decimal } from '@prisma/client/runtime';
+import { Prisma } from '@prisma/client';
 
 import { createTransactionSchema } from '@/schemas/transaction';
 import {
@@ -102,7 +102,7 @@ export const transactionRouter = router({
       .then((expenses) => {
         return expenses.reduce(
           (total, expense) => total.add(expense.amount),
-          new Decimal(0)
+          new Prisma.Decimal(0)
         );
       });
   }),
@@ -120,7 +120,7 @@ export const transactionRouter = router({
       .then((incomes) => {
         return incomes.reduce(
           (total, income) => total.add(income.amount),
-          new Decimal(0)
+          new Prisma.Decimal(0)
         );
       });
   }),
