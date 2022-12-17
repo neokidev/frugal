@@ -20,38 +20,39 @@ model Example {
   updatedAt DateTime @updatedAt
 }
 
-model Expense {
-  id          String          @id @default(cuid())
+model Transaction {
+  id          String              @id @default(cuid())
+  type        TransactionType
   name        String
   description String?
-  amount      Decimal         @db.Money
-  date        DateTime        @db.Date
-  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
+  amount      Decimal             @db.Money
+  currency    Currency
+  date        DateTime            @db.Date
+  category    TransactionCategory @relation(fields: [categoryId], references: [id])
   categoryId  String
-  user        User            @relation(fields: [userId], references: [id])
+  user        User                @relation(fields: [userId], references: [id])
   userId      String
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 }
 
-model ExpenseCategory {
-  id        String    @id @default(cuid())
-  name      String
-  expenses  Expense[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model TransactionCategory {
+  id           String          @id @default(cuid())
+  type         TransactionType
+  name         String
+  transactions Transaction[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 }
 
-model Income {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  amount      Decimal  @db.Money
-  date        DateTime @db.Date
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Balance {
+  id        String   @id @default(cuid())
+  currency  Currency
+  balance   Decimal  @db.Money
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
@@ -82,15 +83,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  expenses      Expense[]
-  incomes       Income[]
+  transactions  Transaction[]
+  balance       Balance?
 }
 
 model VerificationToken {
@@ -99,4 +100,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum TransactionType {
+  income
+  expense
+}
+
+enum Currency {
+  USD
+  JPY
 }

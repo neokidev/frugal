@@ -9,13 +9,13 @@ export const Home = () => {
     data: totalExpenses,
     isLoading: isTotalExpensesLoading,
     error: getTotalExpensesError,
-  } = trpc.expense.getTotalExpensesAmount.useQuery();
+  } = trpc.transaction.getTotalExpensesAmount.useQuery();
 
   const {
     data: totalIncomes,
     isLoading: isTotalIncomesLoading,
     error: getTotalIncomesError,
-  } = trpc.income.getTotalIncomesAmount.useQuery();
+  } = trpc.transaction.getTotalIncomesAmount.useQuery();
 
   if (isTotalExpensesLoading && isTotalIncomesLoading) {
     return <p>Loading transactions...</p>;

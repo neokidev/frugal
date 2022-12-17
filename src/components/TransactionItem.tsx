@@ -1,9 +1,11 @@
+import type { TransactionType } from '@prisma/client';
+
 type Props = {
+  type: TransactionType;
   name: string;
   description: string;
   amount: string;
   date: string;
-  type: 'income' | 'expense';
   icon: () => JSX.Element;
 };
 

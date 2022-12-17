@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createIncomeSchema = z.object({
+export const createTransactionSchema = z.object({
   name: z
     .string({ required_error: 'Name is required' })
     .min(1, 'Name is required'),
@@ -12,6 +12,9 @@ export const createIncomeSchema = z.object({
     required_error: 'Date is required',
     invalid_type_error: 'Date is required',
   }),
+  categoryId: z
+    .string({ required_error: 'Category is required' })
+    .cuid('Category is required'),
 });
 
-export type CreateIncomeInput = z.TypeOf<typeof createIncomeSchema>;
+export type CreateTransactionInput = z.TypeOf<typeof createTransactionSchema>;

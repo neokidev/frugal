@@ -1,24 +1,40 @@
-import { NumberInput, TextInput } from '@mantine/core';
+import { NumberInput, Select, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
-import { useMutateIncome } from '@/hooks/useMutateIncome';
-import type { CreateIncomeInput } from '@/schemas/income';
-import { createIncomeSchema } from '@/schemas/income';
+import { useMutateTransaction } from '@/hooks/useMutateTransaction';
+import type { CreateTransactionInput } from '@/schemas/transaction';
+import { createTransactionSchema } from '@/schemas/transaction';
+import { trpc } from '@/utils/trpc';
 
 export const AddIncomeForm = () => {
-  const { createIncomeMutation } = useMutateIncome();
+  const {
+    data: incomeCategories,
+    isLoading,
+    error,
+  } = trpc.transaction.getIncomeCategories.useQuery();
 
-  const form = useForm<CreateIncomeInput>({
+  const { createIncomeMutation } = useMutateTransaction();
+
+  const form = useForm<CreateTransactionInput>({
     initialValues: {
       name: '',
       description: '',
       amount: 0,
+      categoryId: '',
       date: dayjs().toDate(),
     },
-    validate: zodResolver(createIncomeSchema),
+    validate: zodResolver(createTransactionSchema),
   });
+
+  if (isLoading) {
+    return <p>Loading transactions...</p>;
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
 
   return (
     <form
@@ -70,6 +86,26 @@ export const AddIncomeForm = () => {
         inputFormat="YYYY MMM DD"
         withAsterisk
         {...form.getInputProps('date')}
+      />
+      <Select
+        classNames={{
+          label: 'dark:text-white',
+          input: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+          dropdown: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+          item: 'dark:bg-gray-800 dark:border-gray-600 dark:text-white',
+        }}
+        mt="sm"
+        label="Category"
+        data={incomeCategories.map((value) => ({
+          value: value.id,
+          label: value.name,
+        }))}
+        value={form.values.categoryId}
+        onChange={(value) => value && form.setFieldValue('categoryId', value)}
+        nothingFound="Nobody here"
+        searchable
+        withAsterisk
+        {...form.getInputProps('categoryId')}
       />
       <button
         type="submit"

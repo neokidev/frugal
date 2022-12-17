@@ -1,5 +1,4 @@
-import { expenseRouter } from '@/server/trpc/router/expense';
-import { incomeRouter } from '@/server/trpc/router/income';
+import { transactionRouter } from '@/server/trpc/router/transaction';
 import { router } from '@/server/trpc/trpc';
 
 import { authRouter } from './auth';
@@ -7,8 +6,7 @@ import { exampleRouter } from './example';
 
 export const appRouter = router({
   example: exampleRouter,
-  income: incomeRouter,
-  expense: expenseRouter,
+  transaction: transactionRouter,
   auth: authRouter,
 });
 

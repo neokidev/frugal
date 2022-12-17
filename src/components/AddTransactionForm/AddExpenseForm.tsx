@@ -3,18 +3,21 @@ import { DatePicker } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
-import { useMutateExpense } from '@/hooks/useMutateExpense';
-import type { CreateExpenseInput } from '@/schemas/expense';
-import { createExpenseSchema } from '@/schemas/expense';
+import { useMutateTransaction } from '@/hooks/useMutateTransaction';
+import type { CreateTransactionInput } from '@/schemas/transaction';
+import { createTransactionSchema } from '@/schemas/transaction';
 import { trpc } from '@/utils/trpc';
 
 export const AddExpenseForm = () => {
-  const { data, isLoading, error } =
-    trpc.expense.getAllExpenseCategories.useQuery();
+  const {
+    data: expenseCategories,
+    isLoading,
+    error,
+  } = trpc.transaction.getExpenseCategories.useQuery();
 
-  const { createExpenseMutation } = useMutateExpense();
+  const { createExpenseMutation } = useMutateTransaction();
 
-  const form = useForm<CreateExpenseInput>({
+  const form = useForm<CreateTransactionInput>({
     initialValues: {
       name: '',
       description: '',
@@ -22,7 +25,7 @@ export const AddExpenseForm = () => {
       categoryId: '',
       date: dayjs().toDate(),
     },
-    validate: zodResolver(createExpenseSchema),
+    validate: zodResolver(createTransactionSchema),
   });
 
   if (isLoading) {
@@ -93,7 +96,7 @@ export const AddExpenseForm = () => {
         }}
         mt="sm"
         label="Category"
-        data={data.map((value) => ({
+        data={expenseCategories.map((value) => ({
           value: value.id,
           label: value.name,
         }))}
