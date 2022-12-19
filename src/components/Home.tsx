@@ -1,4 +1,10 @@
+import dayjs from 'dayjs';
+
 import { decimalToString } from '@/utils/decimal';
+import {
+  calcTotalExpensesAmount,
+  calcTotalIncomeAmount,
+} from '@/utils/transaction';
 import { trpc } from '@/utils/trpc';
 
 import { AddTransactionForm } from './AddTransactionForm/AddTransactionForm';
@@ -6,28 +12,49 @@ import { TransactionList } from './TransactionList';
 
 export const Home = () => {
   const {
-    data: totalExpenses,
-    isLoading: isTotalExpensesLoading,
-    error: getTotalExpensesError,
-  } = trpc.transaction.getTotalExpensesAmount.useQuery();
+    data: thisMonthTransactions,
+    isLoading: isThisMonthTransactionsLoading,
+    error: thisMonthTransactionsError,
+  } = trpc.transaction.getTransactions.useQuery({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
 
   const {
-    data: totalIncomes,
-    isLoading: isTotalIncomesLoading,
-    error: getTotalIncomesError,
-  } = trpc.transaction.getTotalIncomesAmount.useQuery();
+    data: lastMonthTransactions,
+    isLoading: isLastMonthTransactionsLoading,
+    error: lastMonthTransactionsError,
+  } = trpc.transaction.getTransactions.useQuery({
+    startDate: dayjs().subtract(1, 'month').startOf('month').toDate(),
+    endDate: dayjs().subtract(1, 'month').endOf('month').toDate(),
+  });
 
-  if (isTotalExpensesLoading && isTotalIncomesLoading) {
+  if (isThisMonthTransactionsLoading || isLastMonthTransactionsLoading) {
     return <p>Loading transactions...</p>;
   }
 
-  if (getTotalExpensesError) {
-    return <p>{getTotalExpensesError.message}</p>;
+  if (thisMonthTransactionsError) {
+    return <p>{thisMonthTransactionsError.message}</p>;
   }
 
-  if (getTotalIncomesError) {
-    return <p>{getTotalIncomesError.message}</p>;
+  if (lastMonthTransactionsError) {
+    return <p>{lastMonthTransactionsError.message}</p>;
   }
+
+  const thisMonthTotalExpenses = calcTotalExpensesAmount(thisMonthTransactions);
+  const lastMonthTotalExpenses = calcTotalExpensesAmount(lastMonthTransactions);
+  const thisMonthTotalIncome = calcTotalIncomeAmount(thisMonthTransactions);
+  const lastMonthTotalIncome = calcTotalIncomeAmount(lastMonthTransactions);
+
+  const monthOnMonthExpenses = thisMonthTotalExpenses
+    .div(lastMonthTotalExpenses)
+    .mul(100)
+    .round();
+
+  const monthOnMonthIncome = thisMonthTotalExpenses
+    .div(lastMonthTotalIncome)
+    .mul(100)
+    .round();
 
   return (
     <div className="mx-auto flex w-full max-w-[80rem] p-6">
@@ -64,15 +91,15 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       income
                     </p>
-                    {!!totalIncomes && (
+                    {
                       <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
-                        totalIncomes,
+                        thisMonthTotalIncome,
                         2
                       )} `}</h5>
-                    )}
+                    }
                     <p>
                       <span className="text-sm font-bold leading-normal text-lime-500">
-                        {'+90% '}
+                        {`+${monthOnMonthIncome}% `}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
                         from last weeks
@@ -88,15 +115,15 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       expenses
                     </p>
-                    {!!totalExpenses && (
+                    {
                       <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
-                        totalExpenses,
+                        thisMonthTotalExpenses,
                         2
                       )} `}</h5>
-                    )}
+                    }
                     <p>
                       <span className="text-sm font-bold leading-normal text-red-500">
-                        {'-90% '}
+                        {`-${monthOnMonthExpenses}% `}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
                         from last weeks

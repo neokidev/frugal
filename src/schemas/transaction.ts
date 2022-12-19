@@ -18,3 +18,19 @@ export const createTransactionSchema = z.object({
 });
 
 export type CreateTransactionInput = z.TypeOf<typeof createTransactionSchema>;
+
+export const getTransactionsSchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  categoryId: z.string().cuid().optional(),
+});
+
+export type GetTransactionsInput = z.TypeOf<typeof getTransactionsSchema>;
+
+export const getThisTransactionsSchema = z.object({
+  categoryId: z.string().cuid().optional(),
+});
+
+export type GetThisTransactionsInput = z.TypeOf<
+  typeof getThisTransactionsSchema
+>;

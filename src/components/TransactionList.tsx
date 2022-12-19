@@ -91,7 +91,10 @@ export const TransactionList = () => {
     data: transactions,
     isLoading,
     error,
-  } = trpc.transaction.getTransactions.useQuery();
+  } = trpc.transaction.getTransactions.useQuery({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
 
   if (isLoading) {
     return <p>Loading transactions...</p>;
