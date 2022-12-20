@@ -30,6 +30,9 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  pages: {
+    newUser: '/onboarding',
+  },
 };
 
 export default NextAuth(authOptions);
