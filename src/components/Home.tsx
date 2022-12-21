@@ -12,6 +12,12 @@ import { TransactionList } from './TransactionList';
 
 export const Home = () => {
   const {
+    data: balance,
+    isLoading: isBalanceLoading,
+    error: getBalanceError,
+  } = trpc.user.getCurrentUserBalance.useQuery();
+
+  const {
     data: thisMonthTransactions,
     isLoading: isThisMonthTransactionsLoading,
     error: thisMonthTransactionsError,
@@ -29,8 +35,16 @@ export const Home = () => {
     endDate: dayjs().subtract(1, 'month').endOf('month').toDate(),
   });
 
-  if (isThisMonthTransactionsLoading || isLastMonthTransactionsLoading) {
+  if (
+    isBalanceLoading ||
+    isThisMonthTransactionsLoading ||
+    isLastMonthTransactionsLoading
+  ) {
     return <p>Loading transactions...</p>;
+  }
+
+  if (getBalanceError) {
+    return <p>{getBalanceError.message}</p>;
   }
 
   if (thisMonthTransactionsError) {
@@ -39,6 +53,10 @@ export const Home = () => {
 
   if (lastMonthTransactionsError) {
     return <p>{lastMonthTransactionsError.message}</p>;
+  }
+
+  if (balance === null) {
+    return <p>Could not get your total balance</p>;
   }
 
   const thisMonthTotalExpenses = calcTotalExpensesAmount(thisMonthTransactions);
@@ -72,10 +90,13 @@ export const Home = () => {
                     <p className="text-sm font-semibold capitalize leading-normal">
                       total balance
                     </p>
-                    <h5 className="mb-0 text-xl font-bold">{' $130,832 '}</h5>
+                    <h5 className="mb-0 text-xl font-bold">{` $${decimalToString(
+                      balance.balance,
+                      2
+                    )} `}</h5>
                     <p>
                       <span className="text-sm font-bold leading-normal text-lime-500">
-                        {'+90% '}
+                        {'+90%(mockup) '}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
                         from last weeks
