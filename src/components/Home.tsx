@@ -64,15 +64,21 @@ export const Home = () => {
   const thisMonthTotalIncome = calcTotalIncomeAmount(thisMonthTransactions);
   const lastMonthTotalIncome = calcTotalIncomeAmount(lastMonthTransactions);
 
-  const monthOnMonthExpenses = thisMonthTotalExpenses
-    .div(lastMonthTotalExpenses)
-    .mul(100)
-    .round();
+  console.log(
+    'debug:',
+    thisMonthTotalExpenses.eq(0),
+    lastMonthTotalExpenses.eq(0),
+    thisMonthTotalIncome.eq(0),
+    lastMonthTotalIncome.eq(1)
+  );
 
-  const monthOnMonthIncome = thisMonthTotalExpenses
-    .div(lastMonthTotalIncome)
-    .mul(100)
-    .round();
+  const monthOnMonthExpenses = lastMonthTotalExpenses.eq(0)
+    ? undefined
+    : thisMonthTotalExpenses.div(lastMonthTotalExpenses).mul(100).round();
+
+  const monthOnMonthIncome = lastMonthTotalIncome.eq(0)
+    ? undefined
+    : thisMonthTotalExpenses.div(lastMonthTotalIncome).mul(100).round();
 
   return (
     <div className="mx-auto flex w-full max-w-[80rem] p-6">
@@ -99,7 +105,7 @@ export const Home = () => {
                         {'+90%(mockup) '}
                       </span>
                       <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
-                        from last weeks
+                        from last months
                       </span>
                     </p>
                   </div>
@@ -118,14 +124,16 @@ export const Home = () => {
                         2
                       )} `}</h5>
                     }
-                    <p>
-                      <span className="text-sm font-bold leading-normal text-lime-500">
-                        {`+${monthOnMonthIncome}% `}
-                      </span>
-                      <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
-                        from last weeks
-                      </span>
-                    </p>
+                    {monthOnMonthIncome !== undefined && (
+                      <p>
+                        <span className="text-sm font-bold leading-normal text-lime-500">
+                          {`+${monthOnMonthIncome}% `}
+                        </span>
+                        <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
+                          from last months
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -142,14 +150,16 @@ export const Home = () => {
                         2
                       )} `}</h5>
                     }
-                    <p>
-                      <span className="text-sm font-bold leading-normal text-red-500">
-                        {`-${monthOnMonthExpenses}% `}
-                      </span>
-                      <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
-                        from last weeks
-                      </span>
-                    </p>
+                    {monthOnMonthExpenses !== undefined && (
+                      <p>
+                        <span className="text-sm font-bold leading-normal text-red-500">
+                          {`-${monthOnMonthExpenses}% `}
+                        </span>
+                        <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
+                          from last months
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
