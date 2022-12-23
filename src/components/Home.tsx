@@ -64,21 +64,17 @@ export const Home = () => {
   const thisMonthTotalIncome = calcTotalIncomeAmount(thisMonthTransactions);
   const lastMonthTotalIncome = calcTotalIncomeAmount(lastMonthTransactions);
 
-  console.log(
-    'debug:',
-    thisMonthTotalExpenses.eq(0),
-    lastMonthTotalExpenses.eq(0),
-    thisMonthTotalIncome.eq(0),
-    lastMonthTotalIncome.eq(1)
-  );
-
   const monthOnMonthExpenses = lastMonthTotalExpenses.eq(0)
     ? undefined
-    : thisMonthTotalExpenses.div(lastMonthTotalExpenses).mul(100).round();
+    : thisMonthTotalExpenses
+        .div(lastMonthTotalExpenses)
+        .sub(1)
+        .mul(100)
+        .round();
 
   const monthOnMonthIncome = lastMonthTotalIncome.eq(0)
     ? undefined
-    : thisMonthTotalExpenses.div(lastMonthTotalIncome).mul(100).round();
+    : thisMonthTotalIncome.div(lastMonthTotalIncome).sub(1).mul(100).round();
 
   return (
     <div className="mx-auto flex w-full max-w-[80rem] p-6">
@@ -127,7 +123,7 @@ export const Home = () => {
                     {monthOnMonthIncome !== undefined && (
                       <p>
                         <span className="text-sm font-bold leading-normal text-lime-500">
-                          {`+${monthOnMonthIncome}% `}
+                          {`${monthOnMonthIncome}% `}
                         </span>
                         <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
                           from last months
@@ -153,7 +149,7 @@ export const Home = () => {
                     {monthOnMonthExpenses !== undefined && (
                       <p>
                         <span className="text-sm font-bold leading-normal text-red-500">
-                          {`-${monthOnMonthExpenses}% `}
+                          {`${monthOnMonthExpenses}% `}
                         </span>
                         <span className="text-xs font-semibold leading-normal text-slate-400 dark:text-slate-500">
                           from last months
