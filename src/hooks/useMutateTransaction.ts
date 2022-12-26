@@ -8,12 +8,18 @@ export const useMutateTransaction = () => {
       utils.transaction.getTransactions
         .invalidate()
         .catch((error) => console.error(error));
+      utils.user.getCurrentUserBalance
+        .invalidate()
+        .catch((error) => console.error(error));
     },
   });
 
   const createIncomeMutation = trpc.transaction.createIncome.useMutation({
     onSuccess: () => {
       utils.transaction.getTransactions
+        .invalidate()
+        .catch((error) => console.error(error));
+      utils.user.getCurrentUserBalance
         .invalidate()
         .catch((error) => console.error(error));
     },

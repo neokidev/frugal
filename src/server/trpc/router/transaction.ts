@@ -12,7 +12,9 @@ export const transactionRouter = router({
   createExpense: protectedProcedure
     .input(createTransactionSchema)
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.transaction.create({
+      const userId = ctx.session?.user?.id;
+
+      const transaction = await ctx.prisma.transaction.create({
         data: {
           type: 'expense',
           name: input.name,
@@ -27,16 +29,38 @@ export const transactionRouter = router({
           },
           user: {
             connect: {
-              id: ctx.session?.user?.id,
+              id: userId,
             },
           },
         },
       });
+
+      const previousBalance = await ctx.prisma.balance.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+      if (previousBalance) {
+        await ctx.prisma.balance.update({
+          data: {
+            currency: 'USD',
+            balance: previousBalance.balance.sub(transaction.amount),
+          },
+          where: {
+            userId,
+          },
+        });
+      }
+
+      return transaction;
     }),
   createIncome: protectedProcedure
     .input(createTransactionSchema)
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.transaction.create({
+      const userId = ctx.session?.user?.id;
+
+      const transaction = await ctx.prisma.transaction.create({
         data: {
           type: 'income',
           name: input.name,
@@ -51,11 +75,31 @@ export const transactionRouter = router({
           },
           user: {
             connect: {
-              id: ctx.session?.user?.id,
+              id: userId,
             },
           },
         },
       });
+
+      const previousBalance = await ctx.prisma.balance.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+      if (previousBalance) {
+        await ctx.prisma.balance.update({
+          data: {
+            currency: 'USD',
+            balance: previousBalance.balance.add(transaction.amount),
+          },
+          where: {
+            userId,
+          },
+        });
+      }
+
+      return transaction;
     }),
   getTransactions: publicProcedure
     .input(getTransactionsSchema)
